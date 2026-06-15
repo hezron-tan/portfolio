@@ -1,6 +1,7 @@
 "use strict";
 let skills = [];
 let experiences = [];
+let projects = [];
 async function loadPortfolioData() {
     try {
         const response = await fetch("assets/data/portfolio-data.json");
@@ -18,16 +19,34 @@ async function loadPortfolioData() {
         return { skills: [], experiences: [] };
     }
 }
+
+async function loadProjectData() {
+    try {
+        const response = await fetch("assets/data/projects.json");
+        if (!response.ok) {
+            throw new Error(`Failed to fetch project JSON: ${response.status}`);
+        }
+        const data = await response.json();
+        return Array.isArray(data) ? data : [];
+    }
+    catch (error) {
+        console.error("Failed to load project data:", error);
+        return [];
+    }
+}
 function renderSkills() {
     const container = document.getElementById("skills-list");
     if (!container)
         return;
     container.innerHTML = skills.map(skill => {
+        const categories = Array.isArray(skill.category) ? skill.category : [skill.category];
         return `
       <article class="skill-card">
         <h5>${skill.name}</h5>
         <p>${skill.detail}</p>
-        <span class="skill-badge">${skill.category}</span>
+        <div class="skill-badges">
+          ${categories.map(cat => `<span class="skill-badge">${cat}</span>`).join("")}
+        </div>
       </article>
     `;
     }).join("");
@@ -47,6 +66,48 @@ function renderExperience() {
       </article>
     `;
     }).join("");
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
+}
+
+function renderProjectCard(project) {
+    return `
+      <article class="project-card">
+        <h5>${project.title}</h5>
+        <p class="project-meta">${formatDate(project.date)}</p>
+        <p>${project.excerpt}</p>
+        <div class="project-tags">
+          ${Array.isArray(project.tags) ? project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("") : ""}
+        </div>
+        <a href="#" data-slug="${project.slug}" class="project-readmore">Read more</a>
+      </article>
+    `;
+}
+
+function renderProjects(projects, currentPage, pageSize) {
+    const container = document.getElementById("projects-list");
+    const pagination = document.getElementById("project-pagination");
+    if (!container || !pagination)
+        return;
+
+    const start = (currentPage - 1) * pageSize;
+    const pageItems = projects.slice(start, start + pageSize);
+
+    container.innerHTML = pageItems.map(renderProjectCard).join("");
+    pagination.innerHTML = "";
+
+    const pageCount = Math.max(1, Math.ceil(projects.length / pageSize));
+    for (let page = 1; page <= pageCount; page++) {
+        const button = document.createElement("button");
+        button.textContent = page.toString();
+        if (page === currentPage)
+            button.className = "active";
+        button.addEventListener("click", () => renderProjects(projects, page, pageSize));
+        pagination.appendChild(button);
+    }
 }
 function attachNavPanelHandlers() {
     const toggle = document.querySelector("#titleBar .toggle");
@@ -117,8 +178,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await loadPortfolioData();
     skills = data.skills;
     experiences = data.experiences;
+    projects = await loadProjectData();
     renderSkills();
     renderExperience();
+    renderProjects(projects, 1, 3);
     attachFormHandler();
     attachNavPanelHandlers();
     highlightNav();

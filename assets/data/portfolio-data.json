@@ -1,11 +1,36 @@
 {
   "skills": [
-    { "name": "Test automation", "category": "Automation", "detail": "Selenium, Playwright, Cypress, API validation" },
-    { "name": "CI/CD quality gates", "category": "DevOps", "detail": "GitHub Actions, Azure Pipelines, automated checks" },
-    { "name": "Test design", "category": "Strategy", "detail": "Exploratory testing, boundary analysis, risk-based planning" },
-    { "name": "Performance validation", "category": "Performance", "detail": "Load profiling, benchmark stability, responsive coverage" },
-    { "name": "Bug analysis", "category": "Investigation", "detail": "Root cause analysis, regression triage, issue prevention" }
-  ],
+  {
+    "name": "Test automation & frameworks",
+    "category": ["Automation", "Language", "Tools"],
+    "detail": "C#.NET, TypeScript, Java, Selenium, Appium, Playwright, SpecFlow/Reqnroll, RestSharp, Visual Studio"
+  },
+  {
+    "name": "Test design & AI acceleration",
+    "category": "Strategy",
+    "detail": "AI-assisted scripting, E2E program-wide planning, ATDD/Gherkin user stories, exploratory validation"
+  },
+  {
+    "name": "Multi-platform system testing",
+    "category": "Execution",
+    "detail": "Web UIs, Mobile (iOS/Android), Desktop applications, Core Banking migration, CRM, eCommerce"
+  },
+  {
+    "name": "Integration & data validation",
+    "category": "Backend",
+    "detail": "API / Web services testing, MS SQL database validation, Dapper ORM, Charles Proxy, SAP IS-U"
+  },
+  {
+    "name": "Defect lifecycle & triage leadership",
+    "category": "Investigation",
+    "detail": "Root cause analysis, cross-team defect triage leadership, Azure DevOps/Jira tracking, regression management"
+  },
+  {
+    "name": "Agile leadership & delivery",
+    "category": "Management",
+    "detail": "Scrum Master (SAFE 4.6), mentoring 7-20+ QA resources, stakeholder reporting, Hypercare/BAU coordination"
+  }
+],
   "experiences": [
     {
       "role": "Senior QA Engineer",

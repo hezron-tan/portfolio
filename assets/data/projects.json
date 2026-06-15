@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "2026-05-18-quality-dashboard",
+    "title": "Release quality dashboard for distributed teams",
+    "date": "2026-05-18",
+    "excerpt": "Launched a release quality dashboard that consolidates test metrics, risk signals, and deployment readiness across distributed teams.",
+    "tags": [
+      "QA",
+      "Dashboard",
+      "Automation"
+    ],
+    "body": "Built a modular dashboard that turned release observability into actionable QA intelligence. It surfaced regression coverage, stability trends, and critical failures so teams could prioritize fixes before launch."
+  },
+  {
+    "slug": "2025-12-01-cross-browser-validation-suite",
+    "title": "Cross-browser validation suite for modern web apps",
+    "date": "2025-12-01",
+    "excerpt": "Delivered a cross-browser validation suite that reduced browser-specific regressions and accelerated release cadence through CI automation.",
+    "tags": [
+      "Automation",
+      "Web",
+      "CI/CD"
+    ],
+    "body": "Designed a flexible automation pipeline that executed smoke and regression tests across Chrome, Edge, Firefox, and Safari, with detailed failure reports and visual checkpoints."
+  },
+  {
+    "slug": "2025-09-10-release-risk-automation",
+    "title": "Release risk automation for continuous delivery",
+    "date": "2025-09-10",
+    "excerpt": "Created a release risk automation layer that evaluates deployment readiness and prevents high-risk builds from progressing in the pipeline.",
+    "tags": [
+      "DevOps",
+      "Risk",
+      "Automation"
+    ],
+    "body": "Automated acceptance checks, smoke gating, and risk scoring to block unstable builds and reduce release rollback frequency. The system integrated service health, test status, and coverage signals."
+  },
+  {
+    "slug": "2025-07-03-api-contract-coverage",
+    "title": "API contract coverage for enterprise services",
+    "date": "2025-07-03",
+    "excerpt": "Built contract coverage tooling for enterprise APIs to catch integration drift and improve service reliability before production delivery.",
+    "tags": [
+      "API",
+      "Testing",
+      "Contracts"
+    ],
+    "body": "Implemented contract-driven validation across backend services, with test assertions that verify schema, response shape, and error behavior as part of CI gating."
+  }
+]

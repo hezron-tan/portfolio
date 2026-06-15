@@ -11,6 +11,15 @@ interface Experience {
   highlights: string[];
 }
 
+interface ProjectPost {
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  tags: string[];
+  body: string;
+}
+
 const skills: Skill[] = [
   { name: "Test automation", category: "Automation", detail: "Selenium, Playwright, Cypress, API validation" },
   { name: "CI/CD quality gates", category: "DevOps", detail: "GitHub Actions, Azure Pipelines, automated checks" },
@@ -52,21 +61,36 @@ const experiences: Experience[] = [
   }
 ];
 
+let projects: ProjectPost[] = [];
+
+async function loadProjectData(): Promise<ProjectPost[]> {
+  try {
+    const response = await fetch("assets/data/projects.json");
+    if (!response.ok) {
+      throw new Error(`Failed to fetch project JSON: ${response.status}`);
+    }
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Failed to load project data:", error);
+    return [];
+  }
+}
+
 function renderSkills(): void {
   const container = document.getElementById("skills-list");
   if (!container) return;
 
   container.innerHTML = skills.map(skill => {
+    const categories = Array.isArray(skill.category) ? skill.category : [skill.category];
     return `
-      <div class="col-md-6 col-lg-4 mb-4">
-        <article class="skill-card p-4 h-100">
-          <div class="d-flex justify-content-between align-items-start mb-3">
-            <h5 class="mb-2">${skill.name}</h5>
-            <span class="skill-badge">${skill.category}</span>
-          </div>
-          <p class="text-secondary mb-0">${skill.detail}</p>
-        </article>
-      </div>
+      <article class="skill-card">
+        <h5>${skill.name}</h5>
+        <p>${skill.detail}</p>
+        <div class="skill-badges">
+          ${categories.map(cat => `<span class="skill-badge">${cat}</span>`).join("")}
+        </div>
+      </article>
     `;
   }).join("");
 }
@@ -86,6 +110,46 @@ function renderExperience(): void {
       </article>
     `;
   }).join("");
+}
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
+}
+
+function renderProjectCard(project: ProjectPost): string {
+  return `
+      <article class="project-card">
+        <h5>${project.title}</h5>
+        <p class="project-meta">${formatDate(project.date)}</p>
+        <p>${project.excerpt}</p>
+        <div class="project-tags">
+          ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("")}
+        </div>
+        <a href="#" data-slug="${project.slug}" class="project-readmore">Read more</a>
+      </article>
+    `;
+}
+
+function renderProjects(projects: ProjectPost[], currentPage: number, pageSize: number): void {
+  const container = document.getElementById("projects-list");
+  const pagination = document.getElementById("project-pagination");
+  if (!container || !pagination) return;
+
+  const start = (currentPage - 1) * pageSize;
+  const pageItems = projects.slice(start, start + pageSize);
+
+  container.innerHTML = pageItems.map(renderProjectCard).join("");
+  pagination.innerHTML = "";
+
+  const pageCount = Math.ceil(projects.length / pageSize);
+  for (let page = 1; page <= pageCount; page++) {
+    const button = document.createElement("button");
+    button.textContent = page.toString();
+    button.className = page === currentPage ? "active" : "";
+    button.addEventListener("click", () => renderProjects(projects, page, pageSize));
+    pagination.appendChild(button);
+  }
 }
 
 function highlightNav(): void {
@@ -126,9 +190,25 @@ function attachFormHandler(): void {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+async function loadProjectData(): Promise<ProjectPost[]> {
+  try {
+    const response = await fetch("assets/data/projects.json");
+    if (!response.ok) {
+      throw new Error(`Failed to fetch project JSON: ${response.status}`);
+    }
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Failed to load project data:", error);
+    return [];
+  }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
   renderSkills();
   renderExperience();
+  projects = await loadProjectData();
+  renderProjects(projects, 1, 3);
   attachFormHandler();
   highlightNav();
   window.addEventListener("scroll", highlightNav, { passive: true });

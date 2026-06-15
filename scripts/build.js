@@ -16,6 +16,7 @@ const filesToCopy = [
   { src: path.resolve(__dirname, "..", "index.html"), dest: path.join(distDir, "index.html") },
   { src: path.resolve(__dirname, "..", "assets", "css", "styles.css"), dest: path.join(cssDir, "styles.css") },
   { src: path.resolve(__dirname, "..", "assets", "data", "portfolio-data.json"), dest: path.join(dataDir, "portfolio-data.json") },
+  { src: path.resolve(__dirname, "..", "assets", "data", "projects.json"), dest: path.join(dataDir, "projects.json") },
   { src: path.resolve(__dirname, "..", "assets", "js", "script.js"), dest: path.join(jsDir, "script.js") },
 ];
 

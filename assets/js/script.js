@@ -110,24 +110,24 @@ function renderProjects(projects, currentPage, pageSize) {
     }
 }
 function attachNavPanelHandlers() {
-    const toggle = document.querySelector("#titleBar .toggle");
+    const toggle = document.getElementById("nav-toggle");
     const navPanel = document.getElementById("navPanel");
     const overlay = document.getElementById("navPanelOverlay");
     const body = document.body;
     if (!toggle || !navPanel || !overlay)
         return;
     const closePanel = () => body.classList.remove("navPanel-visible");
-    toggle.addEventListener("click", event => {
-        event.preventDefault();
+    const toggleHandler = () => {
         body.classList.toggle("navPanel-visible");
-    });
+    };
+    toggle.addEventListener("click", toggleHandler);
     navPanel.addEventListener("click", event => {
         const link = event.target.closest("a");
         if (!link)
             return;
-        event.preventDefault();
         const href = link.getAttribute("href");
         if (href && href.startsWith("#")) {
+            event.preventDefault();
             closePanel();
             const section = document.querySelector(href);
             if (section)
@@ -135,6 +135,7 @@ function attachNavPanelHandlers() {
         }
     });
     overlay.addEventListener("click", closePanel);
+    overlay.addEventListener("touchstart", (e) => { e.preventDefault(); closePanel(); }, { passive: false });
     document.addEventListener("keydown", event => {
         if (event.key === "Escape")
             closePanel();

@@ -2,65 +2,106 @@
   "skills": [
   {
     "name": "Test automation & frameworks",
-    "category": ["Automation", "Language", "Tools"],
-    "detail": "C#.NET, TypeScript, Java, Selenium, Appium, Playwright, SpecFlow/Reqnroll, RestSharp, Visual Studio"
+    "category": ["Automation", "Tools", "AI"],
+    "detail": "C#.NET, TypeScript, Java, Selenium, Appium, Playwright, SpecFlow, Reqnroll, RestSharp, Visual Studio, AI-assisted scripting"
   },
   {
-    "name": "Test design & AI acceleration",
-    "category": "Strategy",
-    "detail": "AI-assisted scripting, E2E program-wide planning, ATDD/Gherkin user stories, exploratory validation"
+    "name": "Manual testing & strategy",
+    "category": ["Strategy", "Design", "AI"],
+    "detail": "Functional System Testing, Exploratory Testing, Risk-based Testing, Test case management, User acceptance testing (UAT) facilitation, AI-assited test design and execution"
   },
   {
     "name": "Multi-platform system testing",
-    "category": "Execution",
-    "detail": "Web UIs, Mobile (iOS/Android), Desktop applications, Core Banking migration, CRM, eCommerce"
+    "category": ["Execution", "Systems"],
+    "detail": "Web UIs, Mobile (iOS/Android), Desktop applications, Oracle Corebanking, SalesforceCRM, SAP IS-U, eCommerce"
   },
   {
     "name": "Integration & data validation",
-    "category": "Backend",
-    "detail": "API / Web services testing, MS SQL database validation, Dapper ORM, Charles Proxy, SAP IS-U"
+    "category": ["Backend"],
+    "detail": "API / Web services testing, MS SQL database, Oracle database, Dapper, Charles Proxy"
   },
   {
     "name": "Defect lifecycle & triage leadership",
-    "category": "Investigation",
+    "category": ["Investigation", "Bug management"],
     "detail": "Root cause analysis, cross-team defect triage leadership, Azure DevOps/Jira tracking, regression management"
   },
   {
     "name": "Agile leadership & delivery",
-    "category": "Management",
-    "detail": "Scrum Master (SAFE 4.6), mentoring 7-20+ QA resources, stakeholder reporting, Hypercare/BAU coordination"
+    "category": ["Management"],
+    "detail": "Scrum Master (SAFE 4.6), Managing large test teams, stakeholder reporting, Hypercare/BAU coordination"
   }
 ],
-  "experiences": [
+  
+"experiences": [
     {
-      "role": "Senior QA Engineer",
-      "company": "Engineering Platform Team",
-      "period": "2024 – Present",
+      "role": "Test Consultant | Engineer Level 1",
+      "company": "Planit Testing",
+      "period": "2022 – Present",
       "highlights": [
-        "Built regression pipelines that reduced release defects by 25%.",
-        "Integrated automated checks into CI/CD for faster delivery feedback.",
-        "Collaborated with developers on resilient end-to-end and API tests."
+        "Led a team of 7 testers delivering end-to-end, regression, and production validation for an oracle core banking transformation.",
+        "Coordinated program-wide E2E testing enabling successful deployment of a core banking system upgrade.",
+        "Acted as SME for complex system integrations (Salesforce & SAP IS-U) specifically for Distributed Energy Systems and Rewards",
+        "Drove test strategy, defect management, and stakeholder reporting across multiple projects and teams.",
+        "Mentored testers and improved delivery quality through structured test planning and automation support."
       ]
     },
     {
-      "role": "QA Automation Specialist",
-      "company": "Fintech Delivery",
-      "period": "2022 – 2024",
+      "role": "Lead Quality Engineer | Senior Quality Engineer",
+      "company": "Cognizant Softvision",
+      "period": "2016 – 2022",
       "highlights": [
-        "Deployed cross-browser automation frameworks for web and service validation.",
-        "Improved test coverage through targeted risk-based scenarios.",
-        "Reduced manual regression execution time by 40% with smart test suites."
+        "Specialised in test automation using C#, Selenium and Azure DevOps pipeline.",
+        "Led automation and functional testing across mobile, web, API, and database layers in banking and manufacturing domains.",
+        "Developed automation solutions using Selenium, Appium, C#, and Java to improve efficiency and coverage.",
+        "Acted as a trainer and mentor, delivering hands-on training for Selenium, Appium, and C# to uplift team capabilities.",
+        "Directed cross-functional QA teams and implemented quality engineering processes at program level.",
+        "Collaborated globally to ensure requirement clarity, defect resolution, and high-quality releases."
       ]
     },
     {
-      "role": "Quality Assurance Engineer",
-      "company": "Product Development Group",
-      "period": "2020 – 2022",
+      "role": "Senior Quality Engineer",
+      "company": "Flexisource IT",
+      "period": "2014 – 2016",
       "highlights": [
-        "Defined acceptance criteria and traceable QA workflows for releases.",
-        "Led exploratory sessions to uncover edge-case failures before launch.",
-        "Mentored teams in quality-first practices and defect prevention."
+        "Managed testing across multiple mobile and web applications spanning various industries and platforms.",
+        "Implemented Selenium automation frameworks and improved QA processes for faster delivery.",
+        "Performed cross-device and cross-platform testing ensuring frontend and backend reliability.",
+        "Acted as Scrum Master facilitating agile ceremonies and supporting development lifecycle."
+      ]
+    },
+    {
+      "role": "Software QA Tester",
+      "company": "IT Managers",
+      "period": "2014",
+      "highlights": [
+        "Executed UAT testing for desktop applications and ensured system reliability and accuracy.",
+        "Developed Excel VBA automation to validate forecasting and reduce manual computation effort.",
+        "Automated regression testing using HP QTP to improve testing consistency.",
+        "Managed defect lifecycle and supported data validation processes."
+      ]
+    },
+    {
+      "role": "QA Tester / Business Analyst",
+      "company": "Magenic Manila Inc.",
+      "period": "2013 – 2014",
+      "highlights": [
+        "Performed functional and cross-browser testing for .NET-based applications with SQL data validation.",
+        "Gathered requirements, wrote user stories, and contributed to solution design as a Business Analyst.",
+        "Collaborated with stakeholders to align business needs with technical delivery.",
+        "Supported application migration projects and ensured quality throughout development."
+      ]
+    },
+    {
+      "role": "Senior Software Engineer",
+      "company": "Accenture Inc.",
+      "period": "2010 – 2013",
+      "highlights": [
+        "Led QA teams of up to 20 testers across functional and regression testing for telecom eCommerce systems.",
+        "Managed defect triage, test data strategy, and release coordination for large-scale projects.",
+        "Oversaw test execution for UI and web services ensuring system functionality and reliability.",
+        "Took on multiple leadership roles including Regression Lead, Release Lead, and Data Management Lead."
       ]
     }
   ]
+
 }

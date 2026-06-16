@@ -190,18 +190,38 @@ function attachFormHandler(): void {
   });
 }
 
-async function loadProjectData(): Promise<ProjectPost[]> {
-  try {
-    const response = await fetch("assets/data/projects.json");
-    if (!response.ok) {
-      throw new Error(`Failed to fetch project JSON: ${response.status}`);
+function attachNavPanelHandlers(): void {
+  const toggle = document.getElementById("nav-toggle") as HTMLButtonElement | null;
+  const navPanel = document.getElementById("navPanel");
+  const overlay = document.getElementById("navPanelOverlay");
+  const body = document.body;
+  if (!toggle || !navPanel || !overlay) return;
+
+  const closePanel = () => body.classList.remove("navPanel-visible");
+  const toggleHandler = () => {
+    body.classList.toggle("navPanel-visible");
+  };
+
+  toggle.addEventListener("click", toggleHandler);
+
+  navPanel.addEventListener("click", (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    const link = target.closest("a") as HTMLAnchorElement | null;
+    if (!link) return;
+    const href = link.getAttribute("href");
+    if (href && href.startsWith("#")) {
+      event.preventDefault();
+      closePanel();
+      const section = document.querySelector(href) as HTMLElement | null;
+      if (section) section.scrollIntoView({ behavior: "smooth" });
     }
-    const data = await response.json();
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    console.error("Failed to load project data:", error);
-    return [];
-  }
+  });
+
+  overlay.addEventListener("click", closePanel);
+
+  document.addEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.key === "Escape") closePanel();
+  });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -210,6 +230,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   projects = await loadProjectData();
   renderProjects(projects, 1, 3);
   attachFormHandler();
+  attachNavPanelHandlers();
   highlightNav();
   window.addEventListener("scroll", highlightNav, { passive: true });
 });

@@ -138,25 +138,32 @@ body.is-preload * {
 }
 
 #titleBar .toggle {
-  text-decoration: none;
   position: absolute;
   left: 0;
   top: 0;
   width: 80px;
   height: 44px;
-  display: block;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #fff;
+  padding: 0;
+  transition: background-color 0.2s ease;
 }
 
 #titleBar .toggle:before {
-  display: inline-block;
-  font-family: sans-serif;
   content: '\2630';
-  color: #fff;
-  width: 44px;
-  height: 44px;
-  line-height: 44px;
-  text-align: center;
-  background: var(--accent);
+  font-family: sans-serif;
+  display: block;
+}
+
+#titleBar .toggle:active,
+#titleBar .toggle:hover {
+  background: var(--accent-dark);
 }
 
 #navPanel {

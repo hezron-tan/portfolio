@@ -1,50 +1,15 @@
 [
   {
-    "slug": "2026-05-18-quality-dashboard",
-    "title": "Release quality dashboard for distributed teams",
-    "date": "2026-05-18",
-    "excerpt": "Launched a release quality dashboard that consolidates test metrics, risk signals, and deployment readiness across distributed teams.",
+    "slug": "2026-06-15-ai-assisted-portfolio-creation",
+    "title": "Published a Web Portfolio using VS Code - Github CoPilot",
+    "date": "2026-06-15",
+    "excerpt": "Built a web porfolio in GitHub pages using HTML 5 Up template and modified it using AI.",
     "tags": [
-      "QA",
-      "Dashboard",
-      "Automation"
+      "AI",
+      "Web Development",
+      "CSS",
+      "Typescript"
     ],
-    "body": "Built a modular dashboard that turned release observability into actionable QA intelligence. It surfaced regression coverage, stability trends, and critical failures so teams could prioritize fixes before launch."
-  },
-  {
-    "slug": "2025-12-01-cross-browser-validation-suite",
-    "title": "Cross-browser validation suite for modern web apps",
-    "date": "2025-12-01",
-    "excerpt": "Delivered a cross-browser validation suite that reduced browser-specific regressions and accelerated release cadence through CI automation.",
-    "tags": [
-      "Automation",
-      "Web",
-      "CI/CD"
-    ],
-    "body": "Designed a flexible automation pipeline that executed smoke and regression tests across Chrome, Edge, Firefox, and Safari, with detailed failure reports and visual checkpoints."
-  },
-  {
-    "slug": "2025-09-10-release-risk-automation",
-    "title": "Release risk automation for continuous delivery",
-    "date": "2025-09-10",
-    "excerpt": "Created a release risk automation layer that evaluates deployment readiness and prevents high-risk builds from progressing in the pipeline.",
-    "tags": [
-      "DevOps",
-      "Risk",
-      "Automation"
-    ],
-    "body": "Automated acceptance checks, smoke gating, and risk scoring to block unstable builds and reduce release rollback frequency. The system integrated service health, test status, and coverage signals."
-  },
-  {
-    "slug": "2025-07-03-api-contract-coverage",
-    "title": "API contract coverage for enterprise services",
-    "date": "2025-07-03",
-    "excerpt": "Built contract coverage tooling for enterprise APIs to catch integration drift and improve service reliability before production delivery.",
-    "tags": [
-      "API",
-      "Testing",
-      "Contracts"
-    ],
-    "body": "Implemented contract-driven validation across backend services, with test assertions that verify schema, response shape, and error behavior as part of CI gating."
+    "body": "I had fun using GitHub CoPilot to create my web portfolio. It was definitely a learning experience (from setting up the workspace to implementing behaviours). Last time I made one was probably back in 2010 when I was completing my Computer Engineering degree. I'm honestly amazed how much I've progressed on completing my MVP for this site. There are still work to be done, but it made a lot smoother. Plus, I've learned new things here, like using Jekyll to manage CMS like posts and learning better ways to give instruction to AI."
   }
 ]

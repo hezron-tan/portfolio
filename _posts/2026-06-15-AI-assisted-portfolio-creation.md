@@ -1,0 +1,7 @@
+---
+title: "Published a Web Portfolio using VS Code - Github CoPilot"
+date: 2026-06-15
+tags: [AI, Web Development, CSS, Typescript]
+excerpt: "Built a web porfolio in GitHub pages using HTML 5 Up template and modified it using AI."
+---
+I had fun using GitHub CoPilot to create my web portfolio. It was definitely a learning experience (from setting up the workspace to implementing behaviours). Last time I made one was probably back in 2010 when I was completing my Computer Engineering degree. I'm honestly amazed how much I've progressed on completing my MVP for this site. There are still work to be done, but it made a lot smoother. Plus, I've learned new things here, like using Jekyll to manage CMS like posts and learning better ways to give instruction to AI.

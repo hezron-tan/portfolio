@@ -37,6 +37,7 @@ body.is-preload * {
 
 #page-wrapper {
   overflow: hidden;
+  transition: transform 0.5s ease;
 }
 
 #header {
@@ -123,6 +124,7 @@ body.is-preload * {
   height: 44px;
   z-index: 10001;
   background: rgba(31, 43, 36, 0.95);
+  transition: transform 0.5s ease;
 }
 
 #titleBar .title {
@@ -135,6 +137,7 @@ body.is-preload * {
   line-height: 44px;
   color: #fff;
   text-align: center;
+  pointer-events: none;
 }
 
 #titleBar .toggle {
@@ -143,6 +146,7 @@ body.is-preload * {
   top: 0;
   width: 80px;
   height: 44px;
+  z-index: 1;
   background: var(--accent);
   border: none;
   cursor: pointer;
@@ -203,18 +207,21 @@ body.is-preload * {
 }
 
 #navPanelOverlay {
-  display: none;
+  display: block;
   position: fixed;
   inset: 0;
   z-index: 10000;
   background: rgba(0, 0, 0, 0.45);
   opacity: 0;
-  transition: opacity 0.35s ease-in-out;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease-in-out, visibility 0.35s ease-in-out;
 }
 
 body.navPanel-visible #navPanelOverlay {
-  display: block;
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 body.navPanel-visible #page-wrapper,

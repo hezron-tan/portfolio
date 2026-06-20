@@ -5,9 +5,15 @@
   "description": "Portfolio website for a software quality engineer built with HTML, Bootstrap, and TypeScript.",
   "scripts": {
     "build": "node scripts/build-projects.js && tsc && node scripts/build.js",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report e2e-report"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.0",
+    "@types/node": "^26.0.0",
     "typescript": "^5.5.4"
   }
 }

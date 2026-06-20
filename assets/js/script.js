@@ -196,4 +196,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     attachNavPanelHandlers();
     highlightNav();
     window.addEventListener("scroll", highlightNav, { passive: true });
+    window.requestAnimationFrame(() => {
+        document.body.classList.remove("is-preload");
+    });
 });

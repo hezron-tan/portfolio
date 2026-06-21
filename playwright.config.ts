@@ -11,8 +11,14 @@ export default defineConfig({
     ['html', { outputFolder: 'e2e-report' }],
   ],
 
+  webServer: {
+    command: 'npx serve . -p 3000 --no-clipboard',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+  },
+
   use: {
-    baseURL: 'http://127.0.0.1:5500',
+    baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
   },
 

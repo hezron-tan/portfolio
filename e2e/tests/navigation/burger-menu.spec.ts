@@ -1,5 +1,5 @@
-import { test, expect } from '../fixtures/base-test';
-import { MOBILE_VIEWPORT, DESKTOP_VIEWPORT } from '../utils/viewport';
+import { test, expect } from '../../fixtures/base-test';
+import { MOBILE_VIEWPORT, DESKTOP_VIEWPORT } from '../../utils/viewport';
 
 test.describe('Burger menu', () => {
   test.describe('mobile viewport', () => {

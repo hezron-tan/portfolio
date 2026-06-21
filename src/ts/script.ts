@@ -1,6 +1,6 @@
 interface Skill {
   name: string;
-  category: string;
+  category: string[];
   detail: string;
 }
 
@@ -20,48 +20,31 @@ interface ProjectPost {
   body: string;
 }
 
-const skills: Skill[] = [
-  { name: "Test automation", category: "Automation", detail: "Selenium, Playwright, Cypress, API validation" },
-  { name: "CI/CD quality gates", category: "DevOps", detail: "GitHub Actions, Azure Pipelines, automated checks" },
-  { name: "Test design", category: "Strategy", detail: "Exploratory testing, boundary analysis, risk-based planning" },
-  { name: "Performance validation", category: "Performance", detail: "Load profiling, benchmark stability, responsive coverage" },
-  { name: "Bug analysis", category: "Investigation", detail: "Root cause analysis, regression triage, issue prevention" },
-];
+interface PortfolioData {
+  skills: Skill[];
+  experiences: Experience[];
+}
 
-const experiences: Experience[] = [
-  {
-    role: "Senior QA Engineer",
-    company: "Engineering Platform Team",
-    period: "2024 – Present",
-    highlights: [
-      "Built regression pipelines that reduced release defects by 25%.",
-      "Integrated automated checks into CI/CD for faster delivery feedback.",
-      "Collaborated with developers on resilient end-to-end and API tests."
-    ]
-  },
-  {
-    role: "QA Automation Specialist",
-    company: "Fintech Delivery",
-    period: "2022 – 2024",
-    highlights: [
-      "Deployed cross-browser automation frameworks for web and service validation.",
-      "Improved test coverage through targeted risk-based scenarios.",
-      "Reduced manual regression execution time by 40% with smart test suites."
-    ]
-  },
-  {
-    role: "Quality Assurance Engineer",
-    company: "Product Development Group",
-    period: "2020 – 2022",
-    highlights: [
-      "Defined acceptance criteria and traceable QA workflows for releases.",
-      "Led exploratory sessions to uncover edge-case failures before launch.",
-      "Mentored teams in quality-first practices and defect prevention."
-    ]
-  }
-];
-
+let skills: Skill[] = [];
+let experiences: Experience[] = [];
 let projects: ProjectPost[] = [];
+
+async function loadPortfolioData(): Promise<PortfolioData> {
+  try {
+    const response = await fetch("assets/data/portfolio-data.json");
+    if (!response.ok) {
+      throw new Error(`Failed to fetch portfolio data: ${response.status}`);
+    }
+    const data = await response.json();
+    return {
+      skills: Array.isArray(data.skills) ? data.skills : [],
+      experiences: Array.isArray(data.experiences) ? data.experiences : [],
+    };
+  } catch (error) {
+    console.error("Failed to load portfolio data:", error);
+    return { skills: [], experiences: [] };
+  }
+}
 
 async function loadProjectData(): Promise<ProjectPost[]> {
   try {
@@ -82,7 +65,7 @@ function renderSkills(): void {
   if (!container) return;
 
   container.innerHTML = skills.map(skill => {
-    const categories = Array.isArray(skill.category) ? skill.category : [skill.category];
+    const categories = skill.category;
     return `
       <article class="skill-card">
         <h5>${skill.name}</h5>
@@ -225,6 +208,9 @@ function attachNavPanelHandlers(): void {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const portfolioData = await loadPortfolioData();
+  skills = portfolioData.skills;
+  experiences = portfolioData.experiences;
   renderSkills();
   renderExperience();
   projects = await loadProjectData();

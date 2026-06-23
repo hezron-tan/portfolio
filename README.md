@@ -20,15 +20,48 @@ A portfolio website designed for a Software Quality Engineer using HTML, Bootstr
 npm install
 ```
 
-3. Build the site:
+3. Start development (rebuilds `_posts` and TypeScript on change):
+
+```bash
+npm run dev
+```
+
+4. In another terminal, serve the site:
+
+```bash
+npx serve . -l 3000
+```
+
+5. Open `http://localhost:3000` in your browser.
+
+For a production build (includes `dist/`):
 
 ```bash
 npm run build
 ```
 
-4. Open `dist/index.html` in your browser or deploy the `dist/` folder to static hosting.
+Open `dist/index.html` or deploy the `dist/` folder to static hosting.
+
+## Project posts
+
+- Add markdown files under `_posts/` using Jekyll-style frontmatter (`title`, `date`, `tags`, `excerpt`).
+- During development, `npm run dev` watches `_posts/` and regenerates `assets/data/projects.json` automatically.
+- `assets/data/projects.json` is generated locally and in CI; it is not committed to git.
+- Pushes to `main`/`master` run the GitHub Pages deploy workflow, which builds from `_posts/` before publishing.
+
+## Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `npm run dev` | Watch `_posts/` and TypeScript; rebuild on save |
+| `npm run build:posts` | Regenerate `projects.json` from `_posts/` |
+| `npm run build:ts` | Compile TypeScript to `assets/js/` |
+| `npm run build:dist` | Copy static assets into `dist/` |
+| `npm run build` | Run all build steps |
+| `npm run test:install` | Download Playwright browsers (run once after clone) |
+| `npm run test` | Run Playwright end-to-end tests |
 
 ## Notes
 
-- Use `npm run watch` to continuously compile TypeScript while editing.
 - The page is ready for GitHub Pages or any static hosting.
+- Enable GitHub Pages with the **GitHub Actions** source in repository settings after the deploy workflow is on your default branch.

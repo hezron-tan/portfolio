@@ -1,3 +1,5 @@
+declare const marked: { parse: (md: string) => string | Promise<string> };
+
 interface Skill {
   name: string;
   category: string[];
@@ -109,7 +111,7 @@ function renderProjectCard(project: ProjectPost): string {
         <div class="project-tags">
           ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("")}
         </div>
-        <a href="#" data-slug="${project.slug}" class="project-readmore">Read more</a>
+        <a href="#projects/${project.slug}" data-slug="${project.slug}" class="project-readmore">Read more</a>
       </article>
     `;
 }
@@ -133,6 +135,44 @@ function renderProjects(projects: ProjectPost[], currentPage: number, pageSize: 
     button.addEventListener("click", () => renderProjects(projects, page, pageSize));
     pagination.appendChild(button);
   }
+}
+
+function showProjectDetail(project: ProjectPost): void {
+  const detailEl = document.getElementById("project-detail");
+  const detailTitle = document.getElementById("detail-title");
+  const detailDate = document.getElementById("detail-date");
+  const detailTags = document.getElementById("detail-tags");
+  const detailBody = document.getElementById("detail-body");
+
+  if (!detailEl || !detailTitle || !detailDate || !detailTags || !detailBody) return;
+
+  detailTitle.textContent = project.title;
+  detailDate.textContent = formatDate(project.date);
+  detailTags.innerHTML = project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("");
+  detailBody.innerHTML = marked.parse(project.body) as string;
+
+  detailEl.classList.add("is-visible");
+  detailEl.scrollTop = 0;
+}
+
+function hideProjectDetail(): void {
+  const detailEl = document.getElementById("project-detail");
+  if (!detailEl) return;
+  detailEl.classList.remove("is-visible");
+}
+
+function handleHashChange(): void {
+  const hash = window.location.hash;
+  const prefix = "#projects/";
+  if (hash.startsWith(prefix)) {
+    const slug = hash.slice(prefix.length);
+    const project = projects.find(p => p.slug === slug);
+    if (project) {
+      showProjectDetail(project);
+      return;
+    }
+  }
+  hideProjectDetail();
 }
 
 function highlightNav(): void {
@@ -195,6 +235,7 @@ function attachNavPanelHandlers(): void {
     if (href && href.startsWith("#")) {
       event.preventDefault();
       closePanel();
+      hideProjectDetail();
       const section = document.querySelector(href) as HTMLElement | null;
       if (section) section.scrollIntoView({ behavior: "smooth" });
     }
@@ -219,6 +260,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   attachNavPanelHandlers();
   highlightNav();
   window.addEventListener("scroll", highlightNav, { passive: true });
+  window.addEventListener("hashchange", handleHashChange);
+  handleHashChange();
   window.requestAnimationFrame(() => {
     document.body.classList.remove("is-preload");
   });

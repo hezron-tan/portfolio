@@ -4,8 +4,14 @@
   "private": true,
   "description": "Portfolio website for a software quality engineer built with HTML, Bootstrap, and TypeScript.",
   "scripts": {
-    "build": "node scripts/build-projects.js && tsc && node scripts/build.js",
+    "build": "npm run build:posts && npm run build:ts && npm run build:dist",
+    "build:posts": "node scripts/build-projects.js",
+    "build:ts": "tsc",
+    "build:dist": "node scripts/build.js",
+    "dev": "npm run build:posts && concurrently \"npm run watch:posts\" \"npm run watch\"",
     "watch": "tsc -w",
+    "watch:posts": "chokidar \"_posts/**/*.md\" -c \"npm run build:posts\"",
+    "test:install": "playwright install --with-deps",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
@@ -14,6 +20,8 @@
   "devDependencies": {
     "@playwright/test": "^1.61.0",
     "@types/node": "^26.0.0",
+    "chokidar-cli": "^3.0.0",
+    "concurrently": "^9.1.2",
     "serve": "^14.2.6",
     "typescript": "^5.5.4"
   }

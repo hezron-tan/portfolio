@@ -155,6 +155,40 @@ function attachProjectModalHandlers() {
             dialog.close();
     });
 }
+function showProjectDetail(project) {
+    const detailEl = document.getElementById("project-detail");
+    const detailTitle = document.getElementById("detail-title");
+    const detailDate = document.getElementById("detail-date");
+    const detailTags = document.getElementById("detail-tags");
+    const detailBody = document.getElementById("detail-body");
+    if (!detailEl || !detailTitle || !detailDate || !detailTags || !detailBody)
+        return;
+    detailTitle.textContent = project.title;
+    detailDate.textContent = formatDate(project.date);
+    detailTags.innerHTML = project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("");
+    detailBody.innerHTML = marked.parse(project.body);
+    detailEl.classList.add("is-visible");
+    detailEl.scrollTop = 0;
+}
+function hideProjectDetail() {
+    const detailEl = document.getElementById("project-detail");
+    if (!detailEl)
+        return;
+    detailEl.classList.remove("is-visible");
+}
+function handleHashChange() {
+    const hash = window.location.hash;
+    const prefix = "#projects/";
+    if (hash.startsWith(prefix)) {
+        const slug = hash.slice(prefix.length);
+        const project = projects.find(p => p.slug === slug);
+        if (project) {
+            showProjectDetail(project);
+            return;
+        }
+    }
+    hideProjectDetail();
+}
 function highlightNav() {
     const sections = Array.from(document.querySelectorAll("main section"));
     const links = Array.from(document.querySelectorAll(".navbar-nav .nav-link"));
@@ -210,6 +244,7 @@ function attachNavPanelHandlers() {
         if (href && href.startsWith("#")) {
             event.preventDefault();
             closePanel();
+            hideProjectDetail();
             const section = document.querySelector(href);
             if (section)
                 section.scrollIntoView({ behavior: "smooth" });
@@ -234,6 +269,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     attachNavPanelHandlers();
     highlightNav();
     window.addEventListener("scroll", highlightNav, { passive: true });
+    window.addEventListener("hashchange", handleHashChange);
+    handleHashChange();
     window.requestAnimationFrame(() => {
         document.body.classList.remove("is-preload");
     });

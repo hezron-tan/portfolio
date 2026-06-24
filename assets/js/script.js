@@ -71,15 +71,27 @@ function formatDate(dateString) {
     return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
 }
 function renderProjectCard(project) {
+    const typeLabel = project.type === "post" ? "Blog" : "GitHub";
+    const meta = project.type === "post"
+        ? formatDate(project.date)
+        : project.language
+            ? `${project.language} · GitHub`
+            : "GitHub";
+    const action = project.type === "post"
+        ? `<button type="button" data-slug="${project.slug}" class="project-readmore">Read more</button>`
+        : `<a href="${project.url}" class="project-readmore" target="_blank" rel="noopener noreferrer">View on GitHub</a>`;
     return `
-      <article class="project-card">
+      <article class="project-card" data-type="${project.type}">
+        <div class="project-card-header">
+          <span class="project-type">${typeLabel}</span>
+          <p class="project-meta">${meta}</p>
+        </div>
         <h5>${project.title}</h5>
-        <p class="project-meta">${formatDate(project.date)}</p>
         <p>${project.excerpt}</p>
         <div class="project-tags">
           ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("")}
         </div>
-        <a href="#projects/${project.slug}" data-slug="${project.slug}" class="project-readmore">Read more</a>
+        ${action}
       </article>
     `;
 }
@@ -100,6 +112,48 @@ function renderProjects(projects, currentPage, pageSize) {
         button.addEventListener("click", () => renderProjects(projects, page, pageSize));
         pagination.appendChild(button);
     }
+    attachProjectReadMoreHandlers();
+}
+function openProjectModal(post) {
+    const dialog = document.getElementById("project-modal");
+    const title = document.getElementById("project-modal-title");
+    const meta = document.getElementById("project-modal-meta");
+    const body = document.getElementById("project-modal-body");
+    if (!dialog || !title || !meta || !body)
+        return;
+    title.textContent = post.title;
+    meta.textContent = formatDate(post.date);
+    body.textContent = post.body;
+    dialog.showModal();
+}
+function attachProjectReadMoreHandlers() {
+    const container = document.getElementById("projects-list");
+    if (!container)
+        return;
+    container.querySelectorAll(".project-readmore[data-slug]").forEach(button => {
+        button.addEventListener("click", () => {
+            const slug = button.dataset.slug;
+            const post = projects.find(item => item.type === "post" && item.slug === slug);
+            if (post)
+                openProjectModal(post);
+        });
+    });
+}
+function attachProjectModalHandlers() {
+    const dialog = document.getElementById("project-modal");
+    const closeButton = document.getElementById("project-modal-close");
+    if (!dialog || !closeButton)
+        return;
+    closeButton.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => {
+        const rect = dialog.getBoundingClientRect();
+        const isInDialog = rect.top <= event.clientY &&
+            event.clientY <= rect.top + rect.height &&
+            rect.left <= event.clientX &&
+            event.clientX <= rect.left + rect.width;
+        if (!isInDialog)
+            dialog.close();
+    });
 }
 function showProjectDetail(project) {
     const detailEl = document.getElementById("project-detail");
@@ -210,6 +264,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderExperience();
     projects = await loadProjectData();
     renderProjects(projects, 1, 3);
+    attachProjectModalHandlers();
     attachFormHandler();
     attachNavPanelHandlers();
     highlightNav();

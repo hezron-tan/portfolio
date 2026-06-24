@@ -15,6 +15,7 @@
 html {
   scroll-behavior: smooth;
   box-sizing: border-box;
+  background: var(--surface);
 }
 
 *, *::before, *::after {
@@ -24,7 +25,7 @@ html {
 body {
   margin: 0;
   min-height: 100%;
-  background: var(--bg);
+  background: var(--surface);
   color: var(--text);
   font-family: 'Open Sans', sans-serif;
   line-height: 1.85;
@@ -38,6 +39,7 @@ body.is-preload * {
 #page-wrapper {
   overflow: hidden;
   transition: transform 0.5s ease;
+  background: var(--surface);
 }
 
 #header {
@@ -243,13 +245,10 @@ body.navPanel-visible #navPanel {
   background: var(--surface-2);
 }
 
-#footer ul {
-  margin-top: 3.25em;
+#banner {
   padding: 8em 0 6em 0;
-  background: linear-gradient(180deg, rgba(15, 20, 18, 0.9) 0%, rgba(15, 20, 18, 0.85) 100%), url('') no-repeat center center;
-  background-color: #1f2b24;
-  background-size: cover;
-  color: #fff;
+  background: var(--surface);
+  color: var(--text-strong);
   text-align: center;
 }
 
@@ -259,17 +258,50 @@ body.navPanel-visible #navPanel {
   padding: 0 1.5rem;
 }
 
-#banner h2 {
-  margin: 0 0 1rem 0;
-  font-size: clamp(2.5rem, 4vw, 4rem);
-  line-height: 1.05;
-  letter-spacing: -0.04em;
+#banner .banner-divider {
+  width: 2.5rem;
+  height: 3px;
+  margin: 0 auto 1.5rem;
+  border-radius: 2px;
+  background: var(--accent);
 }
 
-#banner p {
-  margin: 0 0 2.25em 0;
-  font-size: 1.1rem;
-  color: #cdd2ce;
+#banner .banner-intro {
+  margin: 0 0 1.75em 0;
+  font-size: clamp(1.1rem, 1.9vw, 1.3rem);
+  line-height: 1.75;
+  color: var(--text);
+}
+
+#banner .banner-highlight {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+#banner .banner-stats {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5em 0;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#banner .banner-stats li {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+#banner .banner-stats li + li::before {
+  content: '|';
+  margin-right: 0.75rem;
+  color: var(--border);
+  font-weight: 400;
 }
 
 #main {
@@ -441,6 +473,29 @@ section {
   min-height: 16rem;
 }
 
+.project-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.project-type {
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(95, 176, 183, 0.18);
+  color: var(--accent-dark);
+}
+
+.project-card[data-type="repo"] .project-type {
+  background: rgba(120, 140, 180, 0.2);
+  color: var(--text-strong);
+}
+
 .project-card h5 {
   margin: 0;
   font-size: 1.3rem;
@@ -479,6 +534,70 @@ section {
   color: var(--accent);
   text-decoration: none;
   font-weight: 700;
+}
+
+.project-readmore {
+  margin-top: auto;
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.project-modal {
+  width: min(42rem, calc(100vw - 2rem));
+  padding: 0;
+  border: solid 2px var(--border);
+  border-radius: 1rem;
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.project-modal::backdrop {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.project-modal article {
+  padding: 1.8rem;
+}
+
+.project-modal-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.project-modal-header h3 {
+  margin: 0.35rem 0 0;
+  color: var(--text-strong);
+}
+
+.project-modal-label {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+}
+
+.project-modal-close {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.project-modal-body {
+  white-space: pre-wrap;
+  line-height: 1.7;
 }
 
 .pagination {
@@ -777,11 +896,15 @@ textarea:focus {
 
 @media screen and (max-width: 736px) {
   #banner {
-    padding: 5em 0 4em 0;
+    padding: 6.5em 0 4em 0;
   }
 
-  #banner h2 {
-    font-size: 2.5rem;
+  #banner .banner-stats li {
+    font-size: 0.8rem;
+  }
+
+  #banner .banner-stats li + li::before {
+    margin-right: 0.5rem;
   }
 
   .actions {

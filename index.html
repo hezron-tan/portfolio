@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Software Quality Engineer Portfolio</title>
+  <title>Lead Quality Engineer · ISTQB-CTAL</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Open+Sans+Condensed:wght@700&display=swap" rel="stylesheet" />
@@ -33,7 +33,7 @@
       <div class="logo">
         <div>
           <h1>Hezron Tan</h1>
-          <p>Software Quality Engineer</p>
+          <p>Lead Quality Engineer · ISTQB-CTAL</p>
         </div>
       </div>
     </header>
@@ -49,8 +49,13 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
-        <h2>Reliable, test-driven delivery for modern applications.</h2>
-        <p>Build trusted quality systems, automate coverage, and enable continuous reliability across teams and products.</p>
+        <div class="banner-divider" aria-hidden="true"></div>
+        <p class="banner-intro">Hi, I'm Hezron — a test consultant with <strong class="banner-highlight">15+ years</strong> in manual and <strong class="banner-highlight">automation</strong> testing across web, mobile, and APIs. I lead teams, design test coverage, and build automation with C#, TypeScript, Selenium, and <strong class="banner-highlight">Playwright</strong>, and I'm always looking for smarter ways to test, including <strong class="banner-highlight">AI-assisted</strong> tooling.</p>
+        <ul class="banner-stats">
+          <li>15+ years</li>
+          <li>ISTQB-CTAL</li>
+          <li>Web · Mobile · API</li>
+        </ul>
         <ul class="actions">
           <li><a href="#contact" class="button primary large">Get in Touch</a></li>
           <li><a href="#two" class="button alt large">See Experience</a></li>
@@ -65,10 +70,6 @@
         </header>
         <p class="intro">Practical skills and tools used to raise quality, reduce risk, and accelerate delivery.</p>
         <div class="row gtr-uniform" id="skills-list"></div>
-        <ul class="actions special">
-          <li><a href="#contact" class="button alt">Contact</a></li>
-          <li><a href="#two" class="button alt">Read case studies</a></li>
-        </ul>
       </section>
 
       <section id="two">
@@ -82,7 +83,7 @@
         <header class="major">
           <h2>Projects</h2>
         </header>
-        <p class="intro">Top project posts from the portfolio blog. Showing the latest three summaries with pagination for older content.</p>
+        <p class="intro">Sample GitHub projects and blog posts on the tools I use day to day — from test automation frameworks to AI-assisted development with Cursor, Copilot, and more.</p>
         <div class="row gtr-uniform" id="projects-list"></div>
         <div class="pagination" id="project-pagination"></div>
       </section>
@@ -116,5 +117,19 @@
   </div>
 
   <script src="assets/js/script.js"></script>
+
+  <dialog id="project-modal" class="project-modal">
+    <article>
+      <header class="project-modal-header">
+        <div>
+          <p class="project-modal-label">Blog</p>
+          <h3 id="project-modal-title"></h3>
+          <p id="project-modal-meta" class="project-meta"></p>
+        </div>
+        <button type="button" id="project-modal-close" class="project-modal-close" aria-label="Close">×</button>
+      </header>
+      <div id="project-modal-body" class="project-modal-body"></div>
+    </article>
+  </dialog>
 </body>
 </html>

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "portfolio",
+    "title": "QA Portfolio Website",
+    "date": "2026-06-24",
+    "excerpt": "Static portfolio built with HTML5 UP, TypeScript, Playwright E2E tests, and GitHub Pages deployment.",
+    "url": "https://github.com/hezron-tan/portfolio",
+    "language": "HTML",
+    "tags": ["TypeScript", "Playwright", "GitHub Pages"]
+  },
+  {
+    "id": "ai-powered-playwright-mcp-automation",
+    "title": "AI-Powered Playwright MCP Automation",
+    "date": "2026-05-01",
+    "excerpt": "Playwright automation sample wired for AI-assisted workflows via MCP tooling.",
+    "url": "https://github.com/hezron-tan/ai-powered-playwright-mcp-automation",
+    "language": "TypeScript",
+    "tags": ["Playwright", "AI", "MCP"]
+  },
+  {
+    "id": "playwright-demo",
+    "title": "Playwright Demo",
+    "date": "2024-08-15",
+    "excerpt": "Hands-on Playwright project exploring browser automation patterns and test structure.",
+    "url": "https://github.com/hezron-tan/PlaywrightDemo",
+    "language": "TypeScript",
+    "tags": ["Playwright", "E2E"]
+  },
+  {
+    "id": "basic-selenium",
+    "title": "Basic Selenium",
+    "date": "2023-06-10",
+    "excerpt": "Sample Selenium automation in C# with FakerData and data modelling for test data setup.",
+    "url": "https://github.com/hezron-tan/BasicSelenium",
+    "language": "C#",
+    "tags": ["Selenium", "C#", "Automation"]
+  },
+  {
+    "id": "reqnroll-project",
+    "title": "Reqnroll BDD Project",
+    "date": "2024-03-20",
+    "excerpt": "BDD-style test automation using Reqnroll for readable scenarios and maintainable specs.",
+    "url": "https://github.com/hezron-tan/ReqnrollProject",
+    "language": "C#",
+    "tags": ["Reqnroll", "BDD", "C#"]
+  }
+]

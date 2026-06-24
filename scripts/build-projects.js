@@ -2,8 +2,9 @@ const fs = require("fs");
 const path = require("path");
 
 const postsDir = path.resolve(__dirname, "..", "_posts");
-const outputDir = path.resolve(__dirname, "..", "assets", "data");
-const outputFile = path.join(outputDir, "projects.json");
+const dataDir = path.resolve(__dirname, "..", "assets", "data");
+const reposFile = path.join(dataDir, "github-repos.json");
+const outputFile = path.join(dataDir, "projects.json");
 
 function parseFrontmatter(content) {
   const match = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
@@ -34,14 +35,15 @@ function parseFrontmatter(content) {
   return { frontmatter, body: body.trim() };
 }
 
-function buildProjects() {
+function loadPosts() {
   if (!fs.existsSync(postsDir)) {
     console.error(`Posts directory not found: ${postsDir}`);
     process.exit(1);
   }
 
   const files = fs.readdirSync(postsDir).filter(name => name.endsWith(".md"));
-  const projects = files.map(filename => {
+
+  return files.map(filename => {
     const content = fs.readFileSync(path.join(postsDir, filename), "utf8");
     const { frontmatter, body } = parseFrontmatter(content);
     const slug = filename.replace(/\.md$/, "");
@@ -51,6 +53,7 @@ function buildProjects() {
     }
 
     return {
+      type: "post",
       slug,
       title: frontmatter.title,
       date: frontmatter.date,
@@ -58,11 +61,44 @@ function buildProjects() {
       tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
       body,
     };
-  }).sort((a, b) => new Date(b.date) - new Date(a.date));
+  });
+}
 
-  fs.mkdirSync(outputDir, { recursive: true });
+function loadRepos() {
+  if (!fs.existsSync(reposFile)) {
+    console.warn(`GitHub repos file not found: ${reposFile}`);
+    return [];
+  }
+
+  const repos = JSON.parse(fs.readFileSync(reposFile, "utf8"));
+  if (!Array.isArray(repos)) {
+    throw new Error("github-repos.json must contain an array");
+  }
+
+  return repos.map(repo => {
+    if (!repo.id || !repo.title || !repo.date || !repo.excerpt || !repo.url) {
+      throw new Error(`Missing required fields in github-repos.json entry: ${repo.id || repo.title || "unknown"}`);
+    }
+
+    return {
+      type: "repo",
+      id: repo.id,
+      title: repo.title,
+      date: repo.date,
+      excerpt: repo.excerpt,
+      url: repo.url,
+      language: repo.language || "",
+      tags: Array.isArray(repo.tags) ? repo.tags : [],
+    };
+  });
+}
+
+function buildProjects() {
+  const projects = [...loadPosts(), ...loadRepos()].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  fs.mkdirSync(dataDir, { recursive: true });
   fs.writeFileSync(outputFile, JSON.stringify(projects, null, 2), "utf8");
-  console.log(`Generated ${projects.length} project posts to ${outputFile}`);
+  console.log(`Generated ${projects.length} project items to ${outputFile}`);
 }
 
 buildProjects();

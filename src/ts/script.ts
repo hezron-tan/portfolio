@@ -13,14 +13,28 @@ interface Experience {
   highlights: string[];
 }
 
-interface ProjectPost {
-  slug: string;
+interface ProjectBase {
+  type: "post" | "repo";
   title: string;
   date: string;
   excerpt: string;
   tags: string[];
+}
+
+interface BlogPost extends ProjectBase {
+  type: "post";
+  slug: string;
   body: string;
 }
+
+interface GitHubRepo extends ProjectBase {
+  type: "repo";
+  id: string;
+  url: string;
+  language: string;
+}
+
+type ProjectItem = BlogPost | GitHubRepo;
 
 interface PortfolioData {
   skills: Skill[];
@@ -29,7 +43,7 @@ interface PortfolioData {
 
 let skills: Skill[] = [];
 let experiences: Experience[] = [];
-let projects: ProjectPost[] = [];
+let projects: ProjectItem[] = [];
 
 async function loadPortfolioData(): Promise<PortfolioData> {
   try {
@@ -48,7 +62,7 @@ async function loadPortfolioData(): Promise<PortfolioData> {
   }
 }
 
-async function loadProjectData(): Promise<ProjectPost[]> {
+async function loadProjectData(): Promise<ProjectItem[]> {
   try {
     const response = await fetch("assets/data/projects.json");
     if (!response.ok) {
@@ -102,21 +116,35 @@ function formatDate(dateString: string): string {
   return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
 }
 
-function renderProjectCard(project: ProjectPost): string {
+function renderProjectCard(project: ProjectItem): string {
+  const typeLabel = project.type === "post" ? "Blog" : "GitHub";
+  const meta = project.type === "post"
+    ? formatDate(project.date)
+    : project.language
+      ? `${project.language} · GitHub`
+      : "GitHub";
+
+  const action = project.type === "post"
+    ? `<button type="button" data-slug="${project.slug}" class="project-readmore">Read more</button>`
+    : `<a href="${project.url}" class="project-readmore" target="_blank" rel="noopener noreferrer">View on GitHub</a>`;
+
   return `
-      <article class="project-card">
+      <article class="project-card" data-type="${project.type}">
+        <div class="project-card-header">
+          <span class="project-type">${typeLabel}</span>
+          <p class="project-meta">${meta}</p>
+        </div>
         <h5>${project.title}</h5>
-        <p class="project-meta">${formatDate(project.date)}</p>
         <p>${project.excerpt}</p>
         <div class="project-tags">
           ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("")}
         </div>
-        <a href="#projects/${project.slug}" data-slug="${project.slug}" class="project-readmore">Read more</a>
+        ${action}
       </article>
     `;
 }
 
-function renderProjects(projects: ProjectPost[], currentPage: number, pageSize: number): void {
+function renderProjects(projects: ProjectItem[], currentPage: number, pageSize: number): void {
   const container = document.getElementById("projects-list");
   const pagination = document.getElementById("project-pagination");
   if (!container || !pagination) return;
@@ -135,6 +163,51 @@ function renderProjects(projects: ProjectPost[], currentPage: number, pageSize: 
     button.addEventListener("click", () => renderProjects(projects, page, pageSize));
     pagination.appendChild(button);
   }
+
+  attachProjectReadMoreHandlers();
+}
+
+function openProjectModal(post: BlogPost): void {
+  const dialog = document.getElementById("project-modal") as HTMLDialogElement | null;
+  const title = document.getElementById("project-modal-title");
+  const meta = document.getElementById("project-modal-meta");
+  const body = document.getElementById("project-modal-body");
+  if (!dialog || !title || !meta || !body) return;
+
+  title.textContent = post.title;
+  meta.textContent = formatDate(post.date);
+  body.textContent = post.body;
+  dialog.showModal();
+}
+
+function attachProjectReadMoreHandlers(): void {
+  const container = document.getElementById("projects-list");
+  if (!container) return;
+
+  container.querySelectorAll<HTMLButtonElement>(".project-readmore[data-slug]").forEach(button => {
+    button.addEventListener("click", () => {
+      const slug = button.dataset.slug;
+      const post = projects.find(item => item.type === "post" && item.slug === slug) as BlogPost | undefined;
+      if (post) openProjectModal(post);
+    });
+  });
+}
+
+function attachProjectModalHandlers(): void {
+  const dialog = document.getElementById("project-modal") as HTMLDialogElement | null;
+  const closeButton = document.getElementById("project-modal-close");
+  if (!dialog || !closeButton) return;
+
+  closeButton.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (event: MouseEvent) => {
+    const rect = dialog.getBoundingClientRect();
+    const isInDialog =
+      rect.top <= event.clientY &&
+      event.clientY <= rect.top + rect.height &&
+      rect.left <= event.clientX &&
+      event.clientX <= rect.left + rect.width;
+    if (!isInDialog) dialog.close();
+  });
 }
 
 function showProjectDetail(project: ProjectPost): void {
@@ -256,6 +329,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderExperience();
   projects = await loadProjectData();
   renderProjects(projects, 1, 3);
+  attachProjectModalHandlers();
   attachFormHandler();
   attachNavPanelHandlers();
   highlightNav();

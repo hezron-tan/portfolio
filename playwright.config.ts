@@ -59,6 +59,7 @@ export default defineConfig({
       name: 'project-detail',
       use: { ...devices['Desktop Chrome'] },
       testMatch: ['**/project-detail.spec.ts'],
+      dependencies: ['posts-sync'],
     },
   ],
 });

@@ -566,9 +566,8 @@ section {
 }
 
 .project-modal-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+  position: relative;
+  padding-right: 2.5rem;
   margin-bottom: 1.25rem;
 }
 
@@ -587,11 +586,15 @@ section {
 }
 
 .project-modal-close {
+  position: absolute;
+  top: 0;
+  right: 0;
   border: 0;
   background: none;
   color: var(--muted);
   font-size: 1.75rem;
   line-height: 1;
+  padding: 0;
   cursor: pointer;
 }
 

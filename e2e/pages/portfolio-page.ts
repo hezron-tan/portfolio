@@ -19,13 +19,12 @@ export class PortfolioPage {
   readonly projectsSection: Locator;
   readonly contactSection: Locator;
 
-  // Project detail overlay
-  readonly detailOverlay: Locator;
-  readonly detailTitle: Locator;
-  readonly detailDate: Locator;
-  readonly detailTags: Locator;
-  readonly detailBody: Locator;
-  readonly detailBackBtn: Locator;
+  // Blog post modal
+  readonly projectModal: Locator;
+  readonly projectModalTitle: Locator;
+  readonly projectModalMeta: Locator;
+  readonly projectModalBody: Locator;
+  readonly projectModalClose: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -42,12 +41,11 @@ export class PortfolioPage {
     this.projectsSection = page.locator('#projects');
     this.contactSection = page.locator('#contact');
 
-    this.detailOverlay = page.locator('#project-detail');
-    this.detailTitle = page.locator('#detail-title');
-    this.detailDate = page.locator('#detail-date');
-    this.detailTags = page.locator('#detail-tags');
-    this.detailBody = page.locator('#detail-body');
-    this.detailBackBtn = page.locator('a.detail-back-btn');
+    this.projectModal = page.locator('#project-modal');
+    this.projectModalTitle = page.locator('#project-modal-title');
+    this.projectModalMeta = page.locator('#project-modal-meta');
+    this.projectModalBody = page.locator('#project-modal-body');
+    this.projectModalClose = page.locator('#project-modal-close');
   }
 
   async goto() {
@@ -73,12 +71,23 @@ export class PortfolioPage {
   }
 
   async gotoProjectDetail(slug: string): Promise<void> {
+    await this.page.goto('/');
     await this.page.goto(`/#projects/${slug}`);
   }
 
-  async isDetailVisible(): Promise<boolean> {
-    return this.page.evaluate(() =>
-      document.getElementById('project-detail')?.classList.contains('is-visible') ?? false
-    );
+  async openFirstBlogPost(): Promise<void> {
+    await this.projectsSection.scrollIntoViewIfNeeded();
+    await this.projectsSection.getByRole('button', { name: 'Read more' }).first().click();
+  }
+
+  async closeProjectModal(): Promise<void> {
+    await this.projectModalClose.click();
+  }
+
+  async isProjectModalOpen(): Promise<boolean> {
+    return this.page.evaluate(() => {
+      const dialog = document.getElementById('project-modal') as HTMLDialogElement | null;
+      return dialog?.open ?? false;
+    });
   }
 }

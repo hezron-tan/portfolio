@@ -167,6 +167,17 @@ function renderProjects(projects: ProjectItem[], currentPage: number, pageSize: 
   attachProjectReadMoreHandlers();
 }
 
+function renderPostBody(markdown: string): string {
+  const html = marked.parse(markdown) as string;
+  const template = document.createElement("template");
+  template.innerHTML = html;
+  template.content.querySelectorAll("a[href]").forEach(anchor => {
+    anchor.setAttribute("target", "_blank");
+    anchor.setAttribute("rel", "noopener noreferrer");
+  });
+  return template.innerHTML;
+}
+
 function openProjectModal(post: BlogPost): void {
   const dialog = document.getElementById("project-modal") as HTMLDialogElement | null;
   const title = document.getElementById("project-modal-title");
@@ -176,7 +187,7 @@ function openProjectModal(post: BlogPost): void {
 
   title.textContent = post.title;
   meta.textContent = formatDate(post.date);
-  body.innerHTML = marked.parse(post.body) as string;
+  body.innerHTML = renderPostBody(post.body);
   if (!dialog.open) dialog.showModal();
 }
 

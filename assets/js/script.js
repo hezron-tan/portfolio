@@ -114,6 +114,16 @@ function renderProjects(projects, currentPage, pageSize) {
     }
     attachProjectReadMoreHandlers();
 }
+function renderPostBody(markdown) {
+    const html = marked.parse(markdown);
+    const template = document.createElement("template");
+    template.innerHTML = html;
+    template.content.querySelectorAll("a[href]").forEach(anchor => {
+        anchor.setAttribute("target", "_blank");
+        anchor.setAttribute("rel", "noopener noreferrer");
+    });
+    return template.innerHTML;
+}
 function openProjectModal(post) {
     const dialog = document.getElementById("project-modal");
     const title = document.getElementById("project-modal-title");
@@ -123,7 +133,7 @@ function openProjectModal(post) {
         return;
     title.textContent = post.title;
     meta.textContent = formatDate(post.date);
-    body.innerHTML = marked.parse(post.body);
+    body.innerHTML = renderPostBody(post.body);
     if (!dialog.open)
         dialog.showModal();
 }

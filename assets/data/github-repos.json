@@ -1,5 +1,14 @@
 [
   {
+    "id": "dental-clinic-test-site",
+    "title": "Dental Clinic Test Site",
+    "date": "2026-06-28",
+    "excerpt": "Practice site for UI, API, and load testing — public clinic pages, role-based staff/admin portals, Supabase backend, and Playwright + K6 test suites.",
+    "url": "https://github.com/hezron-tan/dental-clinic-test-site",
+    "language": "TypeScript",
+    "tags": ["Playwright", "Supabase", "K6", "GitHub Pages"]
+  },
+  {
     "id": "portfolio",
     "title": "QA Portfolio Website",
     "date": "2026-06-24",

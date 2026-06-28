@@ -176,8 +176,13 @@ function openProjectModal(post: BlogPost): void {
 
   title.textContent = post.title;
   meta.textContent = formatDate(post.date);
-  body.textContent = post.body;
-  dialog.showModal();
+  body.innerHTML = marked.parse(post.body) as string;
+  if (!dialog.open) dialog.showModal();
+}
+
+function closeProjectModal(): void {
+  const dialog = document.getElementById("project-modal") as HTMLDialogElement | null;
+  if (dialog?.open) dialog.close();
 }
 
 function attachProjectReadMoreHandlers(): void {
@@ -188,7 +193,10 @@ function attachProjectReadMoreHandlers(): void {
     button.addEventListener("click", () => {
       const slug = button.dataset.slug;
       const post = projects.find(item => item.type === "post" && item.slug === slug) as BlogPost | undefined;
-      if (post) openProjectModal(post);
+      if (post) {
+        window.location.hash = `#projects/${post.slug}`;
+        openProjectModal(post);
+      }
     });
   });
 }
@@ -199,6 +207,11 @@ function attachProjectModalHandlers(): void {
   if (!dialog || !closeButton) return;
 
   closeButton.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("close", () => {
+    if (window.location.hash.startsWith("#projects/")) {
+      history.pushState(null, "", "#projects");
+    }
+  });
   dialog.addEventListener("click", (event: MouseEvent) => {
     const rect = dialog.getBoundingClientRect();
     const isInDialog =
@@ -210,42 +223,34 @@ function attachProjectModalHandlers(): void {
   });
 }
 
-function showProjectDetail(project: ProjectPost): void {
-  const detailEl = document.getElementById("project-detail");
-  const detailTitle = document.getElementById("detail-title");
-  const detailDate = document.getElementById("detail-date");
-  const detailTags = document.getElementById("detail-tags");
-  const detailBody = document.getElementById("detail-body");
-
-  if (!detailEl || !detailTitle || !detailDate || !detailTags || !detailBody) return;
-
-  detailTitle.textContent = project.title;
-  detailDate.textContent = formatDate(project.date);
-  detailTags.innerHTML = project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("");
-  detailBody.innerHTML = marked.parse(project.body) as string;
-
-  detailEl.classList.add("is-visible");
-  detailEl.scrollTop = 0;
-}
-
-function hideProjectDetail(): void {
-  const detailEl = document.getElementById("project-detail");
-  if (!detailEl) return;
-  detailEl.classList.remove("is-visible");
+function findBlogPost(slug: string): BlogPost | undefined {
+  return projects.find(item => item.type === "post" && item.slug === slug) as BlogPost | undefined;
 }
 
 function handleHashChange(): void {
   const hash = window.location.hash;
   const prefix = "#projects/";
-  if (hash.startsWith(prefix)) {
-    const slug = hash.slice(prefix.length);
-    const project = projects.find(p => p.slug === slug);
-    if (project) {
-      showProjectDetail(project);
-      return;
-    }
+  if (!hash.startsWith(prefix)) {
+    closeProjectModal();
+    return;
   }
-  hideProjectDetail();
+
+  const slug = hash.slice(prefix.length);
+  const post = findBlogPost(slug);
+  if (post) {
+    openProjectModal(post);
+    return;
+  }
+
+  void loadProjectData().then(items => {
+    projects = items;
+    const loaded = findBlogPost(slug);
+    if (loaded) {
+      openProjectModal(loaded);
+    } else {
+      closeProjectModal();
+    }
+  });
 }
 
 function highlightNav(): void {
@@ -308,7 +313,7 @@ function attachNavPanelHandlers(): void {
     if (href && href.startsWith("#")) {
       event.preventDefault();
       closePanel();
-      hideProjectDetail();
+      closeProjectModal();
       const section = document.querySelector(href) as HTMLElement | null;
       if (section) section.scrollIntoView({ behavior: "smooth" });
     }
@@ -335,6 +340,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   highlightNav();
   window.addEventListener("scroll", highlightNav, { passive: true });
   window.addEventListener("hashchange", handleHashChange);
+  window.addEventListener("popstate", handleHashChange);
+  window.addEventListener("pageshow", (event: PageTransitionEvent) => {
+    if (event.persisted) handleHashChange();
+  });
   handleHashChange();
   window.requestAnimationFrame(() => {
     document.body.classList.remove("is-preload");

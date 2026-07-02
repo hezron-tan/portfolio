@@ -4,7 +4,7 @@ date: 2026-06-28
 tags: [AI, Cursor, Playwright, Supabase, MCP, Allure]
 excerpt: "How I used Cursor's AI to build a Supabase-backed clinic practice site step by step, then automate it with Playwright MCP — with daily Allure reports."
 ---
-I wanted a realistic target for UI, API, and load testing practice — not a toy demo, but something that felt like a small product. That became the [Dental Clinic Test Site](https://github.com/hezron-tan/dental-clinic-test-site): a public clinic homepage, staff login, and separate admin and staff portals with role-based access. I built it with **Cursor IDE and its AI assistant**, and later used the same workflow to grow the **Playwright** test suite — including automation through **Playwright MCP**.
+I wanted a realistic target for UI, API, and load testing practice — not a toy demo, but something that felt like a small product. That became the [Dental Clinic Test Site](https://hezron-tan.github.io/dental-clinic-test-site/): a public clinic homepage, staff login, and separate admin and staff portals with role-based access. I built it with **Cursor IDE and its AI assistant**, and later used the same workflow to grow the **Playwright** test suite — including automation through **Playwright MCP**.
 
 ### Building the site first
 
@@ -45,7 +45,7 @@ Key flows use `data-testid` attributes so tests stay stable. CI runs Playwright 
 
 ### Allure reports — daily
 
-Test results are published as **Allure** reports in a separate repo: [dental-clinic-test-reports](https://github.com/hezron-tan/dental-clinic-test-reports). A **daily** run posts the latest report there, so I can track trends over time instead of only looking at the last CI pass/fail in GitHub Actions.
+Test results are published as **Allure** reports in a separate repo: [dental-clinic-test-reports](https://hezron-tan.github.io/dental-clinic-test-reports/). A **daily** run posts the latest report there, so I can track trends over time instead of only looking at the last CI pass/fail in GitHub Actions.
 
 ### Still ongoing
 

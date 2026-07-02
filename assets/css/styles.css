@@ -437,6 +437,125 @@ section {
   gap: 1.5rem;
 }
 
+.scroll-timeline {
+  --timeline-gutter: 2.5rem;
+  --timeline-dot-size: 0.85rem;
+  position: relative;
+}
+
+.timeline-rail {
+  position: absolute;
+  left: calc(var(--timeline-gutter) / 2 - 1px);
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-milestone {
+  display: grid;
+  grid-template-columns: var(--timeline-gutter) 1fr;
+  column-gap: 1.25rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.45;
+  transition: opacity 0.5s ease;
+}
+
+.timeline-milestone:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-milestone.is-active {
+  opacity: 1;
+}
+
+.timeline-axis {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 0.55rem;
+}
+
+.timeline-dot {
+  width: var(--timeline-dot-size);
+  height: var(--timeline-dot-size);
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  transition: border-color 0.5s ease, transform 0.5s ease, background 0.5s ease;
+}
+
+.timeline-milestone.is-active .timeline-dot {
+  border-color: var(--accent);
+  background: var(--accent);
+  transform: scale(1.15);
+}
+
+.timeline-date {
+  display: block;
+  margin: 0 0 0.5rem 0;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  color: var(--text-strong);
+}
+
+.timeline-body h5 {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.2rem;
+  color: var(--text-strong);
+}
+
+.timeline-meta {
+  margin: 0 0 0.5rem 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.timeline-summary {
+  margin: 0;
+  color: var(--text);
+}
+
+.experience-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+.experience-modal-role {
+  margin-bottom: 2rem;
+}
+
+.experience-modal-role h5 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.35rem;
+  color: var(--text-strong);
+}
+
+.experience-modal-role:last-child {
+  margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-milestone {
+    opacity: 1;
+    transition: none;
+  }
+
+  .timeline-dot {
+    transition: none;
+  }
+}
+
+@media screen and (max-width: 736px) {
+  .scroll-timeline {
+    --timeline-gutter: 2rem;
+  }
+}
+
 .experience-card {
   padding: 1.8rem;
 }

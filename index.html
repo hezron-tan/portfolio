@@ -76,7 +76,12 @@
         <header class="major">
           <h2>Experience</h2>
         </header>
-        <div class="timeline" id="experience-list"></div>
+        <div class="scroll-timeline" id="experience-timeline">
+          <div class="timeline-rail" aria-hidden="true"></div>
+        </div>
+        <div class="experience-actions">
+          <button type="button" id="experience-view-full" class="button alt">View full career history</button>
+        </div>
       </section>
 
       <section id="projects">
@@ -130,6 +135,19 @@
         <button type="button" id="project-modal-close" class="project-modal-close" aria-label="Close">×</button>
       </header>
       <div id="project-modal-body" class="project-modal-body detail-body"></div>
+    </article>
+  </dialog>
+
+  <dialog id="experience-modal" class="project-modal">
+    <article>
+      <header class="project-modal-header">
+        <div>
+          <p class="project-modal-label">Experience</p>
+          <h3>Career history</h3>
+        </div>
+        <button type="button" id="experience-modal-close" class="project-modal-close" aria-label="Close">×</button>
+      </header>
+      <div id="experience-modal-body" class="project-modal-body"></div>
     </article>
   </dialog>
 </body>

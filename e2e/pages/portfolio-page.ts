@@ -16,6 +16,14 @@ export class PortfolioPage {
   readonly banner: Locator;
   readonly skillsSection: Locator;
   readonly experienceSection: Locator;
+  readonly experienceTimeline: Locator;
+  readonly timelineMilestones: Locator;
+  readonly timelineRail: Locator;
+  readonly timelineDots: Locator;
+  readonly viewFullHistoryBtn: Locator;
+  readonly experienceModal: Locator;
+  readonly experienceModalBody: Locator;
+  readonly experienceModalCloseBtn: Locator;
   readonly projectsSection: Locator;
   readonly contactSection: Locator;
 
@@ -38,6 +46,14 @@ export class PortfolioPage {
     this.banner = page.locator('#banner');
     this.skillsSection = page.locator('#one');
     this.experienceSection = page.locator('#two');
+    this.experienceTimeline = page.locator('#experience-timeline');
+    this.timelineMilestones = page.locator('#experience-timeline .timeline-milestone');
+    this.timelineRail = page.locator('#experience-timeline .timeline-rail');
+    this.timelineDots = page.locator('#experience-timeline .timeline-dot');
+    this.viewFullHistoryBtn = page.locator('#experience-view-full');
+    this.experienceModal = page.locator('#experience-modal');
+    this.experienceModalBody = page.locator('#experience-modal-body');
+    this.experienceModalCloseBtn = page.locator('#experience-modal-close');
     this.projectsSection = page.locator('#projects');
     this.contactSection = page.locator('#contact');
 
@@ -50,6 +66,15 @@ export class PortfolioPage {
 
   async goto() {
     await this.page.goto('/');
+    const portfolioMarker = this.page.locator('#experience-timeline, #nav-toggle').first();
+    try {
+      await portfolioMarker.waitFor({ state: 'attached', timeout: 10_000 });
+    } catch {
+      throw new Error(
+        `Portfolio page did not load at ${this.page.url()}. ` +
+          'Another app may be bound to the Playwright test port — stop it or set PLAYWRIGHT_TEST_PORT.'
+      );
+    }
   }
 
   async openMobileMenu() {
@@ -84,10 +109,46 @@ export class PortfolioPage {
     await this.projectModalClose.click();
   }
 
+  async scrollToExperienceViaDesktopNav(): Promise<void> {
+    await this.desktopNav.locator('a[href="#two"]').click();
+  }
+
+  async scrollToExperienceViaMobileNav(): Promise<void> {
+    await this.openMobileMenu();
+    await this.closeMobileMenuViaNavLink('#two');
+  }
+
   async isProjectModalOpen(): Promise<boolean> {
     return this.page.evaluate(() => {
       const dialog = document.getElementById('project-modal') as HTMLDialogElement | null;
       return dialog?.open ?? false;
+    });
+  }
+
+  async getTimelineRailAlignment(): Promise<{
+    firstDotXOffset: number;
+    lastDotXOffset: number;
+    railReachesLastDot: boolean;
+    railStartsAtFirstDot: boolean;
+  }> {
+    return this.page.evaluate(() => {
+      const rail = document.querySelector('.timeline-rail');
+      const dots = Array.from(document.querySelectorAll('.timeline-dot'));
+      if (!rail || dots.length === 0) {
+        throw new Error('Timeline rail or dots not found');
+      }
+
+      const railRect = rail.getBoundingClientRect();
+      const firstDotRect = dots[0].getBoundingClientRect();
+      const lastDotRect = dots[dots.length - 1].getBoundingClientRect();
+      const railCenterX = railRect.left + railRect.width / 2;
+
+      return {
+        firstDotXOffset: Math.abs(firstDotRect.left + firstDotRect.width / 2 - railCenterX),
+        lastDotXOffset: Math.abs(lastDotRect.left + lastDotRect.width / 2 - railCenterX),
+        railReachesLastDot: railRect.bottom >= lastDotRect.bottom - 2,
+        railStartsAtFirstDot: railRect.top <= firstDotRect.top + firstDotRect.height / 2 + 2,
+      };
     });
   }
 }

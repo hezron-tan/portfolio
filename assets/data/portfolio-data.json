@@ -37,6 +37,9 @@
       "role": "Test Consultant | Engineer Level 1",
       "company": "Planit Testing",
       "period": "2022 – Present",
+      "start": "2022-03",
+      "end": "present",
+      "summary": "Spearheaded end-to-end core banking system upgrades and complex integrations using Azure DevOps and SQL, leading a team of seven testers while engineering comprehensive test plans and driving cross-team defect resolution.",
       "highlights": [
         "Led a team of 7 testers delivering end-to-end, regression, and production validation for an oracle core banking transformation.",
         "Coordinated program-wide E2E testing enabling successful deployment of a core banking system upgrade.",
@@ -49,6 +52,9 @@
       "role": "Lead Quality Engineer | Senior Quality Engineer",
       "company": "Cognizant Softvision",
       "period": "2016 – 2022",
+      "start": "2016-06",
+      "end": "2022-02",
+      "summary": "Directed multi-platform quality engineering processes and led technical training initiatives by designing and executing automated test frameworks across Web, Mobile, and APIs using C#.NET, Java, Selenium, Cucumber, and Appium.",
       "highlights": [
         "Specialised in test automation using C#, Selenium and Azure DevOps pipeline.",
         "Led automation and functional testing across mobile, web, API, and database layers in banking and manufacturing domains.",
@@ -62,6 +68,9 @@
       "role": "Senior Quality Engineer",
       "company": "Flexisource IT",
       "period": "2014 – 2016",
+      "start": "2014-03",
+      "end": "2016-05",
+      "summary": "Combined technical agility and agile leadership by acting as a Scrum Master for a code migration while setting up a Selenium C# test automation framework and performing cross-device mobile frontend/backend verification using Charles Proxy.",
       "highlights": [
         "Managed testing across multiple mobile and web applications spanning various industries and platforms.",
         "Implemented Selenium automation frameworks and improved QA processes for faster delivery.",
@@ -73,6 +82,9 @@
       "role": "Software QA Tester",
       "company": "IT Managers",
       "period": "2014",
+      "start": "2014-01",
+      "end": "2014-12",
+      "summary": "Enhanced testing efficiency for desktop retail applications by developing custom Excel VBA/Macro codes for complex financial data validation and automating front-end regression test suites with HP QTP.",
       "highlights": [
         "Executed UAT testing for desktop applications and ensured system reliability and accuracy.",
         "Developed Excel VBA automation to validate forecasting and reduce manual computation effort.",
@@ -84,6 +96,9 @@
       "role": "QA Tester / Business Analyst",
       "company": "Magenic Manila Inc.",
       "period": "2013 – 2014",
+      "start": "2013-06",
+      "end": "2014-02",
+      "summary": "Demonstrated versatile analytical skills by acting as a Business Analyst to gather requirements and author Gherkin user stories, while executing cross-browser functional testing backed by MS SQL database validation.",
       "highlights": [
         "Performed functional and cross-browser testing for .NET-based applications with SQL data validation.",
         "Gathered requirements, wrote user stories, and contributed to solution design as a Business Analyst.",
@@ -95,6 +110,9 @@
       "role": "Senior Software Engineer",
       "company": "Accenture Inc.",
       "period": "2010 – 2013",
+      "start": "2010-06",
+      "end": "2013-12",
+      "summary": "Managed large-scale testing operations of up to 20 resources for a major eCommerce telecom platform, steering regression testing, web services validation, and complex data management using HP ALM.",
       "highlights": [
         "Led QA teams of up to 20 testers across functional and regression testing for telecom eCommerce systems.",
         "Managed defect triage, test data strategy, and release coordination for large-scale projects.",

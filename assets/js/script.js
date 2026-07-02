@@ -50,21 +50,137 @@ function renderSkills() {
     `;
     }).join("");
 }
-function renderExperience() {
-    const container = document.getElementById("experience-list");
+function formatExperienceMonth(dateValue) {
+    const [year, month] = dateValue.split("-");
+    const date = new Date(Number(year), Number(month) - 1, 1);
+    return new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric" }).format(date);
+}
+function formatExperienceRange(start, end) {
+    const startLabel = formatExperienceMonth(start);
+    if (end === "present") {
+        return `${startLabel} – Present`;
+    }
+    return `${startLabel} – ${formatExperienceMonth(end)}`;
+}
+function renderTimelineMilestone(exp, index) {
+    const dateRange = formatExperienceRange(exp.start, exp.end);
+    return `
+    <article class="timeline-milestone" data-index="${index}">
+      <div class="timeline-axis">
+        <span class="timeline-dot" aria-hidden="true"></span>
+      </div>
+      <div class="timeline-body">
+        <time class="timeline-date" datetime="${exp.start}/${exp.end}">${dateRange}</time>
+        <h5>${exp.role}</h5>
+        <p class="timeline-meta">${exp.company}</p>
+        <p class="timeline-summary">${exp.summary}</p>
+      </div>
+    </article>
+  `;
+}
+function renderExperienceRoleDetail(exp) {
+    return `
+    <article class="experience-modal-role">
+      <h5>${exp.role}</h5>
+      <div class="experience-meta">${exp.company} · ${exp.period}</div>
+      <ul class="experience-highlights">
+        ${exp.highlights.map(item => `<li>${item}</li>`).join("")}
+      </ul>
+    </article>
+  `;
+}
+function renderExperienceTimeline() {
+    const container = document.getElementById("experience-timeline");
     if (!container)
         return;
-    container.innerHTML = experiences.map(exp => {
-        return `
-      <article class="experience-card">
-        <h5>${exp.role}</h5>
-        <div class="experience-meta">${exp.company} · ${exp.period}</div>
-        <ul class="experience-highlights">
-          ${exp.highlights.map(item => `<li>${item}</li>`).join("")}
-        </ul>
-      </article>
-    `;
-    }).join("");
+    container.querySelectorAll(".timeline-milestone").forEach(el => el.remove());
+    container.insertAdjacentHTML("beforeend", experiences.map(renderTimelineMilestone).join(""));
+}
+let timelineRailResizeObserver = null;
+function alignTimelineRail() {
+    const container = document.getElementById("experience-timeline");
+    const rail = container?.querySelector(".timeline-rail");
+    const milestones = container?.querySelectorAll(".timeline-milestone");
+    if (!container || !rail || !milestones?.length)
+        return;
+    const firstDot = milestones[0].querySelector(".timeline-dot");
+    const lastDot = milestones[milestones.length - 1].querySelector(".timeline-dot");
+    if (!firstDot || !lastDot)
+        return;
+    const containerRect = container.getBoundingClientRect();
+    const firstDotRect = firstDot.getBoundingClientRect();
+    const lastDotRect = lastDot.getBoundingClientRect();
+    const top = firstDotRect.top + firstDotRect.height / 2 - containerRect.top;
+    const bottom = containerRect.bottom - lastDotRect.bottom;
+    rail.style.top = `${top}px`;
+    rail.style.bottom = `${bottom}px`;
+}
+function initExperienceTimelineObserver() {
+    const container = document.getElementById("experience-timeline");
+    if (!container)
+        return;
+    const milestones = container.querySelectorAll(".timeline-milestone");
+    if (milestones.length === 0)
+        return;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+        milestones.forEach(milestone => milestone.classList.add("is-active"));
+        alignTimelineRail();
+        return;
+    }
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("is-active");
+                requestAnimationFrame(() => alignTimelineRail());
+            }
+        });
+    }, { threshold: 0.4, rootMargin: "-10% 0px" });
+    milestones.forEach(milestone => observer.observe(milestone));
+}
+function openExperienceModal() {
+    const dialog = document.getElementById("experience-modal");
+    const body = document.getElementById("experience-modal-body");
+    if (!dialog || !body)
+        return;
+    body.innerHTML = experiences.map(renderExperienceRoleDetail).join("");
+    if (!dialog.open)
+        dialog.showModal();
+}
+function attachExperienceModalHandlers() {
+    const dialog = document.getElementById("experience-modal");
+    const closeButton = document.getElementById("experience-modal-close");
+    const viewFullButton = document.getElementById("experience-view-full");
+    if (!dialog || !closeButton)
+        return;
+    viewFullButton?.addEventListener("click", () => openExperienceModal());
+    closeButton.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => {
+        const rect = dialog.getBoundingClientRect();
+        const isInDialog = rect.top <= event.clientY &&
+            event.clientY <= rect.top + rect.height &&
+            rect.left <= event.clientX &&
+            event.clientX <= rect.left + rect.width;
+        if (!isInDialog)
+            dialog.close();
+    });
+}
+function renderExperience() {
+    renderExperienceTimeline();
+    alignTimelineRail();
+    initExperienceTimelineObserver();
+}
+function attachExperienceTimelineHandlers() {
+    window.addEventListener("resize", alignTimelineRail, { passive: true });
+    const container = document.getElementById("experience-timeline");
+    if (!container)
+        return;
+    timelineRailResizeObserver?.disconnect();
+    timelineRailResizeObserver = new ResizeObserver(() => alignTimelineRail());
+    timelineRailResizeObserver.observe(container);
+    if (document.fonts?.ready) {
+        void document.fonts.ready.then(() => alignTimelineRail());
+    }
 }
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -278,6 +394,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     experiences = portfolioData.experiences;
     renderSkills();
     renderExperience();
+    attachExperienceModalHandlers();
+    attachExperienceTimelineHandlers();
+    requestAnimationFrame(() => alignTimelineRail());
     projects = await loadProjectData();
     renderProjects(projects, 1, 3);
     attachProjectModalHandlers();

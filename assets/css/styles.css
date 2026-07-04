@@ -946,7 +946,19 @@ textarea:focus {
 .contact-icons {
   justify-content: center;
   gap: 1.5rem;
-  padding: 2rem 0;
+  padding: 2rem 0 1rem;
+}
+
+.contact-location {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.contact-location i {
+  margin-right: 0.4rem;
+  color: var(--accent);
 }
 
 .contact-icons li {

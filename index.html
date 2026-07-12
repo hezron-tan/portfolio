@@ -4,16 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lead Quality Engineer · ISTQB-CTAL</title>
+  <link rel="icon" href="assets/favicon/favicon.ico" sizes="any" />
+  <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/favicon/favicon-96x96.png" type="image/png" sizes="96x96" />
+  <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png" />
+  <link rel="manifest" href="assets/favicon/site.webmanifest" />
+  <meta name="theme-color" content="#181f26" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Open+Sans+Condensed:wght@700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
-<body class="is-preload homepage">
+<body class="is-preload is-loading homepage">
+  <div id="site-loader" class="site-loader" role="status" aria-live="polite" aria-label="Loading portfolio">
+    <div id="loader-rings" class="site-loader__rings" aria-hidden="true"></div>
+    <div class="site-loader__center">
+      <div class="site-loader__orb">
+        <div id="loader-circular-text" class="site-loader__circular"></div>
+        <p class="site-loader__label">Loading</p>
+      </div>
+    </div>
+  </div>
+
   <div id="titleBar">
     <button id="nav-toggle" class="toggle" aria-label="Toggle navigation menu"></button>
-    <span class="title">Hezron Tan</span>
+    <span class="title">Portfolio</span>
   </div>
 
   <div id="navPanel">
@@ -29,16 +45,8 @@
   <div id="navPanelOverlay"></div>
 
   <div id="page-wrapper">
-    <header id="header">
-      <div class="logo">
-        <div>
-          <h1>Hezron Tan</h1>
-          <p>Lead Quality Engineer · ISTQB-CTAL</p>
-        </div>
-      </div>
-    </header>
-
     <section id="banner">
+      <div id="banner-lightfall" class="banner-lightfall" aria-hidden="true"></div>
       <div class="content">
         <nav id="nav">
           <ul class="menu">
@@ -49,8 +57,12 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
+        <div class="logo">
+          <h1>Hezron Tan</h1>
+          <p>Lead Quality Engineer · ISTQB-CTAL</p>
+        </div>
         <div class="banner-divider" aria-hidden="true"></div>
-        <p class="banner-intro">Hi, I'm Hezron — a test consultant with <strong class="banner-highlight">15+ years</strong> in manual and <strong class="banner-highlight">automation</strong> testing across web, mobile, and APIs. I lead teams, design test coverage, and build automation with C#, TypeScript, Selenium, and <strong class="banner-highlight">Playwright</strong>, and I'm always looking for smarter ways to test, including <strong class="banner-highlight">AI-assisted</strong> tooling.</p>
+        <p class="banner-intro">Hi, I'm Hezron — a test consultant with <strong class="banner-highlight">15+ years</strong> in manual and <strong class="banner-highlight">automation</strong> testing across web, mobile, and APIs. I lead teams, design test coverage, and build automation with C#, TypeScript, <strong class="banner-highlight">Selenium</strong>, and <strong class="banner-highlight">Playwright</strong>, and I'm always looking for smarter ways to test, including <strong class="banner-highlight">AI-assisted</strong> tooling.</p>
         <ul class="banner-stats">
           <li>15+ years</li>
           <li>ISTQB-CTAL</li>
@@ -123,7 +135,14 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="assets/js/script.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "ogl": "https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm"
+    }
+  }
+  </script>
+  <script type="module" src="assets/js/script.js"></script>
 
   <dialog id="project-modal" class="project-modal">
     <article>

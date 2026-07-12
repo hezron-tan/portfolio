@@ -1,4 +1,5 @@
-"use strict";
+import { initBannerLightfall } from "./lightfall.js";
+import { initSiteLoader } from "./loader.js";
 let skills = [];
 let experiences = [];
 let projects = [];
@@ -389,6 +390,7 @@ function attachNavPanelHandlers() {
     });
 }
 document.addEventListener("DOMContentLoaded", async () => {
+    const loaderDone = initSiteLoader();
     const portfolioData = await loadPortfolioData();
     skills = portfolioData.skills;
     experiences = portfolioData.experiences;
@@ -402,6 +404,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     attachProjectModalHandlers();
     attachFormHandler();
     attachNavPanelHandlers();
+    initBannerLightfall();
     highlightNav();
     window.addEventListener("scroll", highlightNav, { passive: true });
     window.addEventListener("hashchange", handleHashChange);
@@ -414,4 +417,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.requestAnimationFrame(() => {
         document.body.classList.remove("is-preload");
     });
+    await loaderDone;
 });

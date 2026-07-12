@@ -18,10 +18,23 @@ const filesToCopy = [
   { src: path.resolve(__dirname, "..", "assets", "css", "styles.css"), dest: path.join(cssDir, "styles.css") },
   { src: path.resolve(__dirname, "..", "assets", "data", "portfolio-data.json"), dest: path.join(dataDir, "portfolio-data.json") },
   { src: path.resolve(__dirname, "..", "assets", "data", "projects.json"), dest: path.join(dataDir, "projects.json") },
-  { src: path.resolve(__dirname, "..", "assets", "js", "script.js"), dest: path.join(jsDir, "script.js") },
 ];
 
+const sourceJsDir = path.resolve(__dirname, "..", "assets", "js");
 fs.mkdirSync(distDir, { recursive: true });
 filesToCopy.forEach(({ src, dest }) => copyFile(src, dest));
+
+fs.readdirSync(sourceJsDir)
+  .filter((name) => name.endsWith(".js"))
+  .forEach((name) => {
+    copyFile(path.join(sourceJsDir, name), path.join(jsDir, name));
+  });
+
+const faviconDir = path.resolve(__dirname, "..", "assets", "favicon");
+const distFaviconDir = path.join(assetDir, "favicon");
+fs.mkdirSync(distFaviconDir, { recursive: true });
+fs.readdirSync(faviconDir).forEach((name) => {
+  copyFile(path.join(faviconDir, name), path.join(distFaviconDir, name));
+});
 
 console.log("Build complete. Dist folder is ready.");

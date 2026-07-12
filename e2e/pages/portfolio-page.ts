@@ -64,6 +64,10 @@ export class PortfolioPage {
     this.projectModalClose = page.locator('#project-modal-close');
   }
 
+  /**
+   * Navigates to the portfolio home and waits until the intro loader
+   * (if present) has been dismissed so the page is interactive.
+   */
   async goto() {
     await this.page.goto('/');
     const portfolioMarker = this.page.locator('#experience-timeline, #nav-toggle').first();
@@ -75,6 +79,13 @@ export class PortfolioPage {
           'Another app may be bound to the Playwright test port — stop it or set PLAYWRIGHT_TEST_PORT.'
       );
     }
+    const loader = this.page.locator('#site-loader');
+    if (await loader.count()) {
+      await loader.waitFor({ state: 'detached', timeout: 15_000 });
+    }
+    await this.page.locator('body').evaluate((body) => {
+      body.classList.remove('is-loading', 'loader-exiting');
+    });
   }
 
   async openMobileMenu() {

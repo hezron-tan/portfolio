@@ -285,27 +285,154 @@ function renderProjectCard(project: ProjectItem): string {
     `;
 }
 
-function renderProjects(projects: ProjectItem[], currentPage: number, pageSize: number): void {
+function prefersSmoothScroll(): boolean {
+  return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+const PROJECTS_DESKTOP_PAGE_SIZE = 3;
+const PROJECTS_MOBILE_MQ = "(max-width: 735px)";
+
+let projectsDesktopPage = 1;
+let projectsCarouselTeardown: (() => void) | null = null;
+
+function isProjectsCarouselMode(): boolean {
+  return window.matchMedia(PROJECTS_MOBILE_MQ).matches;
+}
+
+function updateProjectsCarouselStatus(index: number, total: number): void {
+  const status = document.getElementById("projects-carousel-status");
+  if (status) status.textContent = `${index + 1} / ${total}`;
+}
+
+/**
+ * Wires scroll-snap carousel controls and active-slide tracking for mobile.
+ * @returns Cleanup that removes listeners and observers.
+ */
+function initProjectsCarousel(container: HTMLElement, total: number): () => void {
+  const cards = Array.from(container.querySelectorAll<HTMLElement>(".project-card"));
+  const prevBtn = document.getElementById("projects-prev") as HTMLButtonElement | null;
+  const nextBtn = document.getElementById("projects-next") as HTMLButtonElement | null;
+  const controls = document.getElementById("projects-carousel-controls");
+  if (controls) controls.hidden = false;
+
+  let activeIndex = 0;
+
+  const setActive = (index: number) => {
+    activeIndex = Math.max(0, Math.min(total - 1, index));
+    updateProjectsCarouselStatus(activeIndex, total);
+    if (prevBtn) prevBtn.disabled = activeIndex <= 0;
+    if (nextBtn) nextBtn.disabled = activeIndex >= total - 1;
+  };
+
+  const scrollToIndex = (index: number) => {
+    const card = cards[index];
+    if (!card) return;
+    const left = card.offsetLeft - (container.clientWidth - card.clientWidth) / 2;
+    container.scrollTo({
+      left: Math.max(0, left),
+      behavior: prefersSmoothScroll() ? "smooth" : "auto",
+    });
+    setActive(index);
+  };
+
+  const observer = new IntersectionObserver(
+    entries => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      const index = cards.indexOf(visible.target as HTMLElement);
+      if (index >= 0) setActive(index);
+    },
+    { root: container, threshold: [0.55, 0.75] }
+  );
+  cards.forEach(card => observer.observe(card));
+
+  const onPrev = () => scrollToIndex(activeIndex - 1);
+  const onNext = () => scrollToIndex(activeIndex + 1);
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      onPrev();
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      onNext();
+    }
+  };
+
+  prevBtn?.addEventListener("click", onPrev);
+  nextBtn?.addEventListener("click", onNext);
+  container.tabIndex = 0;
+  container.setAttribute("role", "region");
+  container.setAttribute("aria-roledescription", "carousel");
+  container.setAttribute("aria-label", "Projects");
+  container.addEventListener("keydown", onKeyDown);
+  setActive(0);
+
+  return () => {
+    observer.disconnect();
+    prevBtn?.removeEventListener("click", onPrev);
+    nextBtn?.removeEventListener("click", onNext);
+    container.removeEventListener("keydown", onKeyDown);
+    container.removeAttribute("tabindex");
+    container.removeAttribute("role");
+    container.removeAttribute("aria-roledescription");
+    container.removeAttribute("aria-label");
+    if (controls) controls.hidden = true;
+  };
+}
+
+function renderProjects(allProjects: ProjectItem[], currentPage = projectsDesktopPage): void {
   const container = document.getElementById("projects-list");
   const pagination = document.getElementById("project-pagination");
   if (!container || !pagination) return;
 
-  const start = (currentPage - 1) * pageSize;
-  const pageItems = projects.slice(start, start + pageSize);
+  projectsCarouselTeardown?.();
+  projectsCarouselTeardown = null;
 
-  container.innerHTML = pageItems.map(renderProjectCard).join("");
-  pagination.innerHTML = "";
+  if (isProjectsCarouselMode()) {
+    container.classList.add("projects-carousel-track");
+    container.innerHTML = allProjects.map(renderProjectCard).join("");
+    pagination.hidden = true;
+    pagination.innerHTML = "";
+    projectsCarouselTeardown = initProjectsCarousel(container, allProjects.length);
+  } else {
+    container.classList.remove("projects-carousel-track");
+    pagination.hidden = false;
+    projectsDesktopPage = currentPage;
 
-  const pageCount = Math.ceil(projects.length / pageSize);
-  for (let page = 1; page <= pageCount; page++) {
-    const button = document.createElement("button");
-    button.textContent = page.toString();
-    button.className = page === currentPage ? "active" : "";
-    button.addEventListener("click", () => renderProjects(projects, page, pageSize));
-    pagination.appendChild(button);
+    const start = (currentPage - 1) * PROJECTS_DESKTOP_PAGE_SIZE;
+    const pageItems = allProjects.slice(start, start + PROJECTS_DESKTOP_PAGE_SIZE);
+    container.innerHTML = pageItems.map(renderProjectCard).join("");
+    pagination.innerHTML = "";
+
+    const pageCount = Math.ceil(allProjects.length / PROJECTS_DESKTOP_PAGE_SIZE);
+    for (let page = 1; page <= pageCount; page++) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = page.toString();
+      button.className = page === currentPage ? "active" : "";
+      button.setAttribute("aria-label", `Projects page ${page}`);
+      if (page === currentPage) button.setAttribute("aria-current", "page");
+      button.addEventListener("click", () => {
+        renderProjects(allProjects, page);
+        document.getElementById("projects")?.scrollIntoView({
+          behavior: prefersSmoothScroll() ? "smooth" : "auto",
+          block: "start",
+        });
+      });
+      pagination.appendChild(button);
+    }
   }
 
   attachProjectReadMoreHandlers();
+}
+
+function attachProjectsLayoutWatcher(): void {
+  const mq = window.matchMedia(PROJECTS_MOBILE_MQ);
+  mq.addEventListener("change", () => {
+    if (projects.length) renderProjects(projects, projectsDesktopPage);
+  });
 }
 
 function renderPostBody(markdown: string): string {
@@ -443,6 +570,31 @@ function attachFormHandler(): void {
   });
 }
 
+/**
+ * Smooth-scrolls only for in-page section links (nav / CTAs).
+ * Leaves native wheel scrolling alone by not setting CSS scroll-behavior.
+ */
+function attachInPageAnchorHandlers(): void {
+  document.addEventListener("click", (event: MouseEvent) => {
+    const link = (event.target as HTMLElement | null)?.closest("a");
+    if (!link) return;
+
+    const href = link.getAttribute("href");
+    if (!href || !href.startsWith("#") || href.length < 2 || href.startsWith("#projects/")) {
+      return;
+    }
+
+    const section = document.querySelector(href) as HTMLElement | null;
+    if (!section) return;
+
+    event.preventDefault();
+    document.body.classList.remove("navPanel-visible");
+    closeProjectModal();
+    section.scrollIntoView({ behavior: prefersSmoothScroll() ? "smooth" : "auto" });
+    history.pushState(null, "", href);
+  });
+}
+
 function attachNavPanelHandlers(): void {
   const toggle = document.getElementById("nav-toggle") as HTMLButtonElement | null;
   const navPanel = document.getElementById("navPanel");
@@ -456,21 +608,6 @@ function attachNavPanelHandlers(): void {
   };
 
   toggle.addEventListener("click", toggleHandler);
-
-  navPanel.addEventListener("click", (event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-    const link = target.closest("a") as HTMLAnchorElement | null;
-    if (!link) return;
-    const href = link.getAttribute("href");
-    if (href && href.startsWith("#")) {
-      event.preventDefault();
-      closePanel();
-      closeProjectModal();
-      const section = document.querySelector(href) as HTMLElement | null;
-      if (section) section.scrollIntoView({ behavior: "smooth" });
-    }
-  });
-
   overlay.addEventListener("click", closePanel);
 
   document.addEventListener("keydown", (event: KeyboardEvent) => {
@@ -490,10 +627,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   attachExperienceTimelineHandlers();
   requestAnimationFrame(() => alignTimelineRail());
   projects = await loadProjectData();
-  renderProjects(projects, 1, 3);
+  renderProjects(projects, 1);
+  attachProjectsLayoutWatcher();
   attachProjectModalHandlers();
   attachFormHandler();
   attachNavPanelHandlers();
+  attachInPageAnchorHandlers();
   initBannerLightfall();
   highlightNav();
   window.addEventListener("scroll", highlightNav, { passive: true });

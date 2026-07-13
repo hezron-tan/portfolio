@@ -13,7 +13,7 @@
   {
     "name": "Multi-platform system testing",
     "category": ["Execution", "Systems"],
-    "detail": "Web UIs, Mobile (iOS/Android), Desktop applications, Oracle Corebanking, SalesforceCRM, SAP IS-U, eCommerce"
+    "detail": "Web UIs, Mobile (iOS/Android), Desktop applications, Oracle Flexcube, Salesforce CRM, SAP IS-U, eCommerce"
   },
   {
     "name": "Integration & data validation",
@@ -107,7 +107,7 @@
       ]
     },
     {
-      "role": "Senior Software Engineer",
+      "role": "Senior Software Engineer | Associate Software Engineer",
       "company": "Accenture Inc.",
       "period": "2010 – 2013",
       "start": "2010-06",

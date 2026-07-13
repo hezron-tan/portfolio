@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 const portfolioDataPath = path.resolve(__dirname, '..', '..', 'assets', 'data', 'portfolio-data.json');
+const projectsDataPath = path.resolve(__dirname, '..', '..', 'assets', 'data', 'projects.json');
 
 export interface ExperienceEntry {
   role: string;
@@ -11,6 +12,21 @@ export interface ExperienceEntry {
   end: string;
   summary: string;
   highlights: string[];
+}
+
+export interface ProjectEntry {
+  type: 'post' | 'repo';
+  title: string;
+  date: string;
+  excerpt: string;
+  tags: string[];
+}
+
+/**
+ * Loads the built projects list used by the Projects section.
+ */
+export function loadProjects(): ProjectEntry[] {
+  return JSON.parse(fs.readFileSync(projectsDataPath, 'utf8')) as ProjectEntry[];
 }
 
 export function loadExperiences(): ExperienceEntry[] {

@@ -25,6 +25,13 @@ export class PortfolioPage {
   readonly experienceModalBody: Locator;
   readonly experienceModalCloseBtn: Locator;
   readonly projectsSection: Locator;
+  readonly projectsList: Locator;
+  readonly projectCards: Locator;
+  readonly projectPagination: Locator;
+  readonly projectsCarouselControls: Locator;
+  readonly projectsCarouselStatus: Locator;
+  readonly projectsCarouselPrev: Locator;
+  readonly projectsCarouselNext: Locator;
   readonly contactSection: Locator;
 
   // Blog post modal
@@ -55,6 +62,13 @@ export class PortfolioPage {
     this.experienceModalBody = page.locator('#experience-modal-body');
     this.experienceModalCloseBtn = page.locator('#experience-modal-close');
     this.projectsSection = page.locator('#projects');
+    this.projectsList = page.locator('#projects-list');
+    this.projectCards = page.locator('#projects-list .project-card');
+    this.projectPagination = page.locator('#project-pagination');
+    this.projectsCarouselControls = page.locator('#projects-carousel-controls');
+    this.projectsCarouselStatus = page.locator('#projects-carousel-status');
+    this.projectsCarouselPrev = page.locator('#projects-prev');
+    this.projectsCarouselNext = page.locator('#projects-next');
     this.contactSection = page.locator('#contact');
 
     this.projectModal = page.locator('#project-modal');
@@ -114,6 +128,37 @@ export class PortfolioPage {
   async openFirstBlogPost(): Promise<void> {
     await this.projectsSection.scrollIntoViewIfNeeded();
     await this.projectsSection.getByRole('button', { name: 'Read more' }).first().click();
+  }
+
+  /**
+   * Scrolls the Projects section into view for layout assertions.
+   */
+  async scrollToProjects(): Promise<void> {
+    await this.projectsSection.scrollIntoViewIfNeeded();
+  }
+
+  /**
+   * Clicks a numbered desktop pagination button for the Projects section.
+   * @param pageNumber - 1-based page index shown on the button label
+   */
+  async goToProjectsPage(pageNumber: number): Promise<void> {
+    await this.projectPagination
+      .getByRole('button', { name: `Projects page ${pageNumber}` })
+      .click();
+  }
+
+  /**
+   * Advances the mobile projects carousel to the next card.
+   */
+  async goToNextProjectCard(): Promise<void> {
+    await this.projectsCarouselNext.click();
+  }
+
+  /**
+   * Moves the mobile projects carousel to the previous card.
+   */
+  async goToPreviousProjectCard(): Promise<void> {
+    await this.projectsCarouselPrev.click();
   }
 
   async closeProjectModal(): Promise<void> {

@@ -13,7 +13,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 3.25em;
   box-sizing: border-box;
   background: var(--surface);
@@ -905,6 +904,10 @@ section {
   margin-top: 2rem;
 }
 
+.pagination[hidden] {
+  display: none;
+}
+
 .pagination button {
   border: solid 1px var(--border);
   background: var(--surface-2);
@@ -919,6 +922,74 @@ section {
   background: var(--accent);
   border-color: var(--accent-dark);
   color: #fff;
+}
+
+.projects-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.projects-carousel-controls[hidden] {
+  display: none;
+}
+
+.projects-carousel-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: solid 1px var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface-2);
+  color: var(--text-strong);
+  cursor: pointer;
+}
+
+.projects-carousel-nav:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  color: #fff;
+}
+
+.projects-carousel-nav:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.projects-carousel-status {
+  margin: 0;
+  min-width: 4.5rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+#projects-list.projects-carousel-track {
+  display: flex;
+  flex-wrap: nowrap;
+  grid-template-columns: none;
+  gap: 1rem;
+  margin: 0;
+  padding: 0.15rem 0 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+#projects-list.projects-carousel-track > .project-card {
+  flex: 0 0 86%;
+  max-width: 22rem;
+  min-width: 0;
+  scroll-snap-align: center;
+  padding: 1.8rem;
 }
 
 .label {
@@ -1076,6 +1147,19 @@ textarea:focus {
 
 .contact-details a:hover {
   color: var(--accent);
+}
+
+#contact > section > p a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(95, 176, 183, 0.35);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+#contact > section > p a:hover {
+  color: var(--accent-dark);
+  border-bottom-color: var(--accent-dark);
 }
 
 .split {

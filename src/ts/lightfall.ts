@@ -226,11 +226,12 @@ export function createLightfall(
   } = options;
 
   const renderer = new Renderer({
-    dpr: dpr ?? Math.min(window.devicePixelRatio || 1, 2),
+    // Cap DPR — full retina + this shader is a common scroll hitch source
+    dpr: dpr ?? Math.min(window.devicePixelRatio || 1, 1.25),
     alpha: true,
-    antialias: true,
+    antialias: false,
     depth: false,
-    preserveDrawingBuffer: true,
+    preserveDrawingBuffer: false,
   });
   const gl = renderer.gl;
   const canvas = gl.canvas;
@@ -289,7 +290,10 @@ export function createLightfall(
   const mouseTarget: [number, number] = [0, 0];
   let lastTime = 0;
   let rafId = 0;
-  let paused = false;
+  let documentHidden = document.hidden;
+  let offscreen = false;
+
+  const isPaused = () => documentHidden || offscreen;
 
   const resize = () => {
     const rect = container.getBoundingClientRect();
@@ -306,6 +310,7 @@ export function createLightfall(
   ro.observe(container);
 
   const onPointerMove = (e: PointerEvent) => {
+    if (isPaused()) return;
     const rect = canvas.getBoundingClientRect();
     const scale = renderer.dpr || 1;
     const x = (e.clientX - rect.left) * scale;
@@ -321,12 +326,12 @@ export function createLightfall(
     pointerTarget.addEventListener("pointermove", onPointerMove);
   }
 
-  const visibilityHandler = () => {
-    paused = document.hidden;
-  };
-  document.addEventListener("visibilitychange", visibilityHandler);
-
   const loop = (t: number) => {
+    if (isPaused()) {
+      rafId = 0;
+      return;
+    }
+
     rafId = requestAnimationFrame(loop);
     uniforms.iTime.value = t * 0.001;
 
@@ -344,22 +349,54 @@ export function createLightfall(
       lastTime = t;
     }
 
-    if (!paused) {
-      try {
-        renderer.render({ scene: mesh, frustumCull: false });
-      } catch (error) {
-        console.error("Lightfall render error:", error);
-      }
+    try {
+      renderer.render({ scene: mesh, frustumCull: false });
+    } catch (error) {
+      console.error("Lightfall render error:", error);
     }
   };
-  rafId = requestAnimationFrame(loop);
+
+  const startLoop = () => {
+    if (isPaused() || rafId) return;
+    lastTime = 0;
+    rafId = requestAnimationFrame(loop);
+  };
+
+  const stopLoop = () => {
+    if (!rafId) return;
+    cancelAnimationFrame(rafId);
+    rafId = 0;
+  };
+
+  const syncLoop = () => {
+    if (isPaused()) stopLoop();
+    else startLoop();
+  };
+
+  const visibilityHandler = () => {
+    documentHidden = document.hidden;
+    syncLoop();
+  };
+  document.addEventListener("visibilitychange", visibilityHandler);
+
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      offscreen = !entry?.isIntersecting;
+      syncLoop();
+    },
+    { root: null, threshold: 0 }
+  );
+  io.observe(container);
+
+  startLoop();
 
   return () => {
-    cancelAnimationFrame(rafId);
+    stopLoop();
     if (mouseInteraction) {
       pointerTarget.removeEventListener("pointermove", onPointerMove);
     }
     document.removeEventListener("visibilitychange", visibilityHandler);
+    io.disconnect();
     ro.disconnect();
     if (canvas.parentElement === container) {
       container.removeChild(canvas);
@@ -385,16 +422,16 @@ export function initBannerLightfall(): () => void {
   try {
     return createLightfall(mount, {
       // Soft teal ambient + accent streaks (theme tokens, not React Bits purple/pink)
-      // Tuned down so the center scrim + copy stay readable
+      // Tuned for readability and lower GPU cost while the banner is on-screen
       colors: ["#a8dce0", "#5fb0b7", "#3a8a92"],
       backgroundColor: "#3a8a92",
       speed: 0.45,
-      streakCount: 3,
+      streakCount: 2,
       streakWidth: 1,
       streakLength: 1.1,
       glow: 0.85,
-      density: 0.5,
-      twinkle: 0.7,
+      density: 0.4,
+      twinkle: 0.65,
       zoom: 2.6,
       backgroundGlow: 0.32,
       opacity: 0.72,
@@ -403,6 +440,7 @@ export function initBannerLightfall(): () => void {
       mouseRadius: 1,
       mouseDampening: 0.15,
       mixBlendMode: "screen",
+      dpr: Math.min(window.devicePixelRatio || 1, 1.25),
       pointerTarget: banner,
     });
   } catch (error) {

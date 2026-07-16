@@ -41,11 +41,12 @@
       "end": "present",
       "summary": "Spearheaded end-to-end core banking system upgrades and complex integrations using Azure DevOps and SQL, leading a team of seven testers while engineering comprehensive test plans and driving cross-team defect resolution.",
       "highlights": [
-        "Led a team of 7 testers delivering end-to-end, regression, and production validation for an oracle core banking transformation.",
-        "Coordinated program-wide E2E testing enabling successful deployment of a core banking system upgrade.",
-        "Acted as SME for complex system integrations (Salesforce & SAP IS-U) specifically for Distributed Energy Systems and Rewards",
-        "Drove test strategy, defect management, and stakeholder reporting across multiple projects and teams.",
-        "Mentored testers and improved delivery quality through structured test planning and automation support."
+        "Managed a team of 7 testers across three cross-functional teams, overseeing E2E testing, regression testing, and post-deployment verification.",
+        "Coordinated and executed program-wide E2E testing for Heartland Bank's core banking system upgrade to support production deployment.",
+        "Managed two concurrent testing projects, creating test plans, designing test cases, and establishing daily status reporting for stakeholders.",
+        "Acted as Subject Matter Expert (SME) for Distributed Energy Systems at Synergy, working with Salesforce and SAP IS-U integrations to perform root-cause analysis..",
+        "Managed defect workflows by leading daily stand-ups and triage meetings, using SQL for data validation, and setting up defect trackers in Azure DevOps and Monday.com",
+        "Assisted with onboarding by mentoring new testers, conducting technical system walkthroughs, and explaining system logic to business users."
       ]
     },
     {
@@ -56,12 +57,12 @@
       "end": "2022-02",
       "summary": "Directed multi-platform quality engineering processes and led technical training initiatives by designing and executing automated test frameworks across Web, Mobile, and APIs using C#.NET, Java, Selenium, Cucumber, and Appium.",
       "highlights": [
-        "Specialised in test automation using C#, Selenium and Azure DevOps pipeline.",
-        "Led automation and functional testing across mobile, web, API, and database layers in banking and manufacturing domains.",
-        "Developed automation solutions using Selenium, Appium, C#, and Java to improve efficiency and coverage.",
-        "Acted as a trainer and mentor, delivering hands-on training for Selenium, Appium, and C# to uplift team capabilities.",
-        "Directed cross-functional QA teams and implemented quality engineering processes at program level.",
-        "Collaborated globally to ensure requirement clarity, defect resolution, and high-quality releases."
+        "Directed end-to-end testing and implemented Quality Engineering processes at project and program levels.",
+        "Developed test automation frameworks using Java, Cucumber, and Appium for a mobile banking application to increase test coverage.",
+        "Developed a C# Selenium automation framework for a web-based construction reporting tool alongside manual testing.",
+        "Coordinated QA tasks across US and Ukraine teams for a healthcare research system, focusing on requirement clarification and defect management.",
+        "Managed full-lifecycle test execution across Mobile, Web, API, and databases for an enterprise org-builder application..",
+        "Contributed to the Quality Engineering Group by creating training materials and upskilling engineers in JavaScript, SpecFlow, WebDriverJS, and Jest."
       ]
     },
     {
@@ -72,10 +73,10 @@
       "end": "2016-05",
       "summary": "Combined technical agility and agile leadership by acting as a Scrum Master for a code migration while setting up a Selenium C# test automation framework and performing cross-device mobile frontend/backend verification using Charles Proxy.",
       "highlights": [
-        "Managed testing across multiple mobile and web applications spanning various industries and platforms.",
-        "Implemented Selenium automation frameworks and improved QA processes for faster delivery.",
-        "Performed cross-device and cross-platform testing ensuring frontend and backend reliability.",
-        "Acted as Scrum Master facilitating agile ceremonies and supporting development lifecycle."
+        "Tested mobile applications (Government, Health, Productivity) for an Australian client, validating frontend and backend functionality via Charles Proxy on iOS and Android.",
+        "Acted as Scrum Master for a Delphi to C# .NET migration project, facilitating sprint ceremonies and resolving cross-team dependencies.",
+        "Established a Selenium C# test automation framework to reduce regression cycles.",
+        "Authored Test Summary Reports and deployment checklists for scheduled production releases and hotfixes."
       ]
     },
     {
@@ -86,10 +87,9 @@
       "end": "2014-12",
       "summary": "Enhanced testing efficiency for desktop retail applications by developing custom Excel VBA/Macro codes for complex financial data validation and automating front-end regression test suites with HP QTP.",
       "highlights": [
-        "Executed UAT testing for desktop applications and ensured system reliability and accuracy.",
-        "Developed Excel VBA automation to validate forecasting and reduce manual computation effort.",
-        "Automated regression testing using HP QTP to improve testing consistency.",
-        "Managed defect lifecycle and supported data validation processes."
+        "Developed Excel VBA/Macro tools to automate data validation against system CSV outputs, reducing testing cycle times.",
+        "Automated front-end regression testing suites using HP QTP.",
+        "Conducted User Acceptance Testing (UAT) and defect tracking for an enterprise HR scheduling desktop application."
       ]
     },
     {
@@ -100,10 +100,9 @@
       "end": "2014-02",
       "summary": "Demonstrated versatile analytical skills by acting as a Business Analyst to gather requirements and author Gherkin user stories, while executing cross-browser functional testing backed by MS SQL database validation.",
       "highlights": [
-        "Performed functional and cross-browser testing for .NET-based applications with SQL data validation.",
-        "Gathered requirements, wrote user stories, and contributed to solution design as a Business Analyst.",
-        "Collaborated with stakeholders to align business needs with technical delivery.",
-        "Supported application migration projects and ensured quality throughout development."
+        "Validated data migrations to .NET technologies for a Customer Service application using MS SQL queries and cross-browser testing.",
+        "Acted as a joint Business Analyst, gathering requirements and writing Gherkin-style user stories for an employee badge system.",
+        "Designed UI wireframes and mockups to refine the system user experience based on stakeholder feedback."
       ]
     },
     {
@@ -114,10 +113,10 @@
       "end": "2013-12",
       "summary": "Managed large-scale testing operations of up to 20 resources for a major eCommerce telecom platform, steering regression testing, web services validation, and complex data management using HP ALM.",
       "highlights": [
-        "Led QA teams of up to 20 testers across functional and regression testing for telecom eCommerce systems.",
-        "Managed defect triage, test data strategy, and release coordination for large-scale projects.",
-        "Oversaw test execution for UI and web services ensuring system functionality and reliability.",
-        "Took on multiple leadership roles including Regression Lead, Release Lead, and Data Management Lead."
+        "Appointed as Regression Test Lead, managing 10-20 testers executing regression suites for a US telecommunications eCommerce site.",
+        "Shared duties as Secondary Release Lead, managing risk/mitigation planning, defect coordination, and status updates with US counterparts..",
+        "Supervised a Data Management Team of 6 resources maintaining test data across staging environments.",
+        "Executed functional UI and Web Service testing using HP ALM, and led teams of 2-5 testers on production support patches."
       ]
     }
   ]

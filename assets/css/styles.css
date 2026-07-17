@@ -862,8 +862,10 @@ section {
 
 .project-modal {
   position: relative;
-  width: min(42rem, calc(100vw - 2rem));
-  max-height: calc(100vh - 2rem);
+  /* Prefer % over vw so the dialog cannot exceed the layout viewport. */
+  width: min(42rem, calc(100% - 3rem));
+  max-height: calc(100vh - 3rem);
+  max-height: calc(100dvh - 3rem);
   padding: 0;
   border: none;
   background: transparent;
@@ -883,8 +885,11 @@ section {
 
 .project-modal article {
   padding: 1.8rem;
-  max-height: calc(100vh - 2rem);
+  max-height: calc(100vh - 3rem);
+  max-height: calc(100dvh - 3rem);
+  overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: contain;
   border: solid 2px var(--border);
   border-radius: 1rem;
   background: var(--surface-2);
@@ -932,6 +937,31 @@ section {
 .project-modal-close:focus-visible {
   color: var(--text-strong);
   outline: none;
+}
+
+@media screen and (max-width: 736px) {
+  /* Keep dialog + close control fully on-screen on narrow viewports. */
+  .project-modal {
+    width: min(42rem, calc(100% - 1.5rem));
+    max-height: calc(100vh - 1.5rem);
+    max-height: calc(100dvh - 1.5rem);
+    overflow: hidden;
+  }
+
+  .project-modal article {
+    max-height: calc(100vh - 1.5rem);
+    max-height: calc(100dvh - 1.5rem);
+    padding: 1.25rem;
+  }
+
+  .project-modal-header {
+    padding-right: 2.75rem;
+  }
+
+  .project-modal-close {
+    top: 0.65rem;
+    right: 0.65rem;
+  }
 }
 
 .project-modal-body.detail-body {

@@ -4,6 +4,7 @@ import {
   removeTestPost,
   writeTestPost,
 } from '../../utils/posts';
+import { MOBILE_VIEWPORT } from '../../utils/viewport';
 
 // Use a filename distinct from TEST_POST_FILENAME so posts-sync's resetTestPosts()
 // cannot delete this post while these tests are running in parallel.
@@ -181,5 +182,22 @@ test.describe('Project detail modal', () => {
       const slug = await button.getAttribute('data-slug');
       expect(slug).toBeTruthy();
     }
+  });
+
+  test.describe('mobile viewport', () => {
+    test.use({ viewport: MOBILE_VIEWPORT });
+
+    test('project modal and close button stay within the mobile viewport', async ({ portfolioPage }) => {
+      await portfolioPage.gotoProjectDetail(DETAIL_SLUG);
+      await expect(portfolioPage.projectModal).toHaveAttribute('open', '');
+
+      const bounds = await portfolioPage.isModalFullyWithinViewport('project-modal');
+      expect(bounds.withinViewport).toBe(true);
+      expect(bounds.dialog.bottom).toBeLessThanOrEqual(bounds.viewport.height + 1);
+      expect(bounds.dialog.right).toBeLessThanOrEqual(bounds.viewport.width + 1);
+      expect(bounds.close).not.toBeNull();
+      expect(bounds.close!.right).toBeLessThanOrEqual(bounds.viewport.width + 1);
+      expect(bounds.close!.top).toBeGreaterThanOrEqual(-1);
+    });
   });
 });

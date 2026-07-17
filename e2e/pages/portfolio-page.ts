@@ -199,6 +199,55 @@ export class PortfolioPage {
   }
 
   /**
+   * Returns whether a modal dialog and its close button stay within the viewport.
+   * @param modalId - DOM id of the dialog element
+   * @param tolerancePx - Allowed overflow in CSS pixels (sub-pixel / rounding slack)
+   */
+  async isModalFullyWithinViewport(
+    modalId: string,
+    tolerancePx = 1
+  ): Promise<{
+    withinViewport: boolean;
+    dialog: { top: number; right: number; bottom: number; left: number };
+    close: { top: number; right: number; bottom: number; left: number } | null;
+    viewport: { width: number; height: number };
+  }> {
+    return this.page.evaluate(
+      ({ id, tolerance }) => {
+        const dialog = document.getElementById(id);
+        if (!dialog) throw new Error(`Modal not found: ${id}`);
+
+        const close = dialog.querySelector('.project-modal-close') as HTMLElement | null;
+        const dialogRect = dialog.getBoundingClientRect();
+        const closeRect = close?.getBoundingClientRect() ?? null;
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        const toBox = (rect: DOMRect) => ({
+          top: rect.top,
+          right: rect.right,
+          bottom: rect.bottom,
+          left: rect.left,
+        });
+
+        const rectWithin = (rect: DOMRect) =>
+          rect.left >= -tolerance &&
+          rect.top >= -tolerance &&
+          rect.right <= width + tolerance &&
+          rect.bottom <= height + tolerance;
+
+        return {
+          withinViewport: rectWithin(dialogRect) && (closeRect ? rectWithin(closeRect) : true),
+          dialog: toBox(dialogRect),
+          close: closeRect ? toBox(closeRect) : null,
+          viewport: { width, height },
+        };
+      },
+      { id: modalId, tolerance: tolerancePx }
+    );
+  }
+
+  /**
    * Returns the current window scroll offset.
    */
   async getScrollY(): Promise<number> {

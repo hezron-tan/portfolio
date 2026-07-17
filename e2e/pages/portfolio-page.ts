@@ -181,6 +181,30 @@ export class PortfolioPage {
     });
   }
 
+  /**
+   * Returns how far a modal dialog is from the vertical center of the viewport.
+   * @param modalId - DOM id of the dialog element
+   */
+  async getModalVerticalCenterOffset(modalId: string): Promise<number> {
+    return this.page.evaluate((id) => {
+      const dialog = document.getElementById(id);
+      if (!dialog) throw new Error(`Modal not found: ${id}`);
+
+      const rect = dialog.getBoundingClientRect();
+      const viewportCenterY = window.innerHeight / 2;
+      const dialogCenterY = rect.top + rect.height / 2;
+
+      return Math.abs(dialogCenterY - viewportCenterY);
+    }, modalId);
+  }
+
+  /**
+   * Returns the current window scroll offset.
+   */
+  async getScrollY(): Promise<number> {
+    return this.page.evaluate(() => window.scrollY);
+  }
+
   async getTimelineRailAlignment(): Promise<{
     firstDotXOffset: number;
     lastDotXOffset: number;

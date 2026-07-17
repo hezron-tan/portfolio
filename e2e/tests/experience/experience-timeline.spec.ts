@@ -125,6 +125,21 @@ test.describe('Experience scroll timeline', () => {
 
     await expect(portfolioPage.experienceModal).toBeHidden();
   });
+
+  test('experience modal stays centered in the viewport when opened mid-page', async ({ portfolioPage }) => {
+    await portfolioPage.timelineMilestones.last().scrollIntoViewIfNeeded();
+    const scrollYBeforeOpen = await portfolioPage.getScrollY();
+    expect(scrollYBeforeOpen).toBeGreaterThan(100);
+
+    await portfolioPage.viewFullHistoryBtn.click();
+    await expect(portfolioPage.experienceModal).toBeVisible();
+
+    const centerOffset = await portfolioPage.getModalVerticalCenterOffset('experience-modal');
+    expect(centerOffset).toBeLessThan(80);
+
+    const scrollYAfterOpen = await portfolioPage.getScrollY();
+    expect(Math.abs(scrollYAfterOpen - scrollYBeforeOpen)).toBeLessThan(5);
+  });
 });
 
 test.describe('Experience navigation', () => {

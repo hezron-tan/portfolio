@@ -24,7 +24,7 @@ test.describe('Burger menu', () => {
     test('all nav links are present in the panel', async ({ portfolioPage }) => {
       await portfolioPage.openMobileMenu();
 
-      const links = ['#banner', '#one', '#two', '#projects', '#contact'];
+      const links = ['#banner', '#skills', '#experience', '#projects', '#contact'];
       for (const href of links) {
         await expect(
           portfolioPage.navPanel.locator(`a[href="${href}"]`)
@@ -48,7 +48,7 @@ test.describe('Burger menu', () => {
 
     test('clicking a nav link closes the panel and scrolls to section', async ({ portfolioPage }) => {
       await portfolioPage.openMobileMenu();
-      await portfolioPage.closeMobileMenuViaNavLink('#one');
+      await portfolioPage.closeMobileMenuViaNavLink('#skills');
 
       expect(await portfolioPage.isMobileMenuOpen()).toBe(false);
     });

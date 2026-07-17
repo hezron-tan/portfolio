@@ -51,8 +51,8 @@ export class PortfolioPage {
     this.navPanelOverlay = page.locator('#navPanelOverlay');
 
     this.banner = page.locator('#banner');
-    this.skillsSection = page.locator('#one');
-    this.experienceSection = page.locator('#two');
+    this.skillsSection = page.locator('#skills');
+    this.experienceSection = page.locator('#experience');
     this.experienceTimeline = page.locator('#experience-timeline');
     this.timelineMilestones = page.locator('#experience-timeline .timeline-milestone');
     this.timelineRail = page.locator('#experience-timeline .timeline-rail');
@@ -166,12 +166,12 @@ export class PortfolioPage {
   }
 
   async scrollToExperienceViaDesktopNav(): Promise<void> {
-    await this.desktopNav.locator('a[href="#two"]').click();
+    await this.desktopNav.locator('a[href="#experience"]').click();
   }
 
   async scrollToExperienceViaMobileNav(): Promise<void> {
     await this.openMobileMenu();
-    await this.closeMobileMenuViaNavLink('#two');
+    await this.closeMobileMenuViaNavLink('#experience');
   }
 
   async isProjectModalOpen(): Promise<boolean> {

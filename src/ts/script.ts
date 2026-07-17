@@ -5,8 +5,9 @@ declare const marked: { parse: (md: string) => string | Promise<string> };
 
 interface Skill {
   name: string;
+  icon: string;
   category: string[];
-  detail: string;
+  tools: string[];
 }
 
 interface Experience {
@@ -82,19 +83,27 @@ async function loadProjectData(): Promise<ProjectItem[]> {
   }
 }
 
+/**
+ * Renders skill capability cards.
+ */
 function renderSkills(): void {
   const container = document.getElementById("skills-list");
   if (!container) return;
 
   container.innerHTML = skills.map(skill => {
-    const categories = skill.category;
+    const tools = skill.tools ?? [];
     return `
       <article class="skill-card">
-        <h5>${skill.name}</h5>
-        <p>${skill.detail}</p>
-        <div class="skill-badges">
-          ${categories.map(cat => `<span class="skill-badge">${cat}</span>`).join("")}
-        </div>
+        <header class="skill-card-header">
+          <span class="skill-card-icon" aria-hidden="true"><i class="fa-solid ${skill.icon}"></i></span>
+          <h5>${skill.name}</h5>
+        </header>
+        <p class="skill-tools">${tools.map((tool, index) => {
+          const separator = index < tools.length - 1
+            ? '<span class="skill-tool-sep" aria-hidden="true">&nbsp;|&nbsp;</span>'
+            : "";
+          return `<span class="skill-tool">${tool}${separator}</span>`;
+        }).join("")}</p>
       </article>
     `;
   }).join("");

@@ -1,38 +1,89 @@
 {
   "skills": [
-  {
-    "name": "Test automation & frameworks",
-    "category": ["Automation", "Tools", "AI"],
-    "detail": "C#.NET, TypeScript, Java, Selenium, Appium, Playwright, SpecFlow, Reqnroll, RestSharp, Visual Studio, AI-assisted scripting"
-  },
-  {
-    "name": "Manual testing & strategy",
-    "category": ["Strategy", "Design", "AI"],
-    "detail": "Functional System Testing, Exploratory Testing, Risk-based Testing, Test case management, User acceptance testing (UAT) facilitation, AI-assited test design and execution"
-  },
-  {
-    "name": "Multi-platform system testing",
-    "category": ["Execution", "Systems"],
-    "detail": "Web UIs, Mobile (iOS/Android), Desktop applications, Oracle Flexcube, Salesforce CRM, SAP IS-U, eCommerce"
-  },
-  {
-    "name": "Integration & data validation",
-    "category": ["Backend"],
-    "detail": "API / Web services testing, MS SQL database, Oracle database, Dapper, Charles Proxy"
-  },
-  {
-    "name": "Defect lifecycle & triage leadership",
-    "category": ["Investigation", "Bug management"],
-    "detail": "Root cause analysis, cross-team defect triage leadership, Azure DevOps/Jira tracking, regression management"
-  },
-  {
-    "name": "Agile leadership & delivery",
-    "category": ["Management"],
-    "detail": "Scrum Master (SAFE 4.6), Managing large test teams, stakeholder reporting, Hypercare/BAU coordination"
-  }
-],
-  
-"experiences": [
+    {
+      "name": "Test automation & frameworks",
+      "icon": "fa-robot",
+      "category": ["Automation", "Tools", "AI"],
+      "tools": [
+        "C#/.NET",
+        "TypeScript",
+        "Java",
+        "Selenium",
+        "Appium",
+        "Playwright",
+        "SpecFlow",
+        "Reqnroll",
+        "RestSharp",
+        "Visual Studio",
+        "AI-assisted scripting"
+      ]
+    },
+    {
+      "name": "Manual testing & strategy",
+      "icon": "fa-clipboard-check",
+      "category": ["Strategy", "Design", "AI"],
+      "tools": [
+        "System testing",
+        "Exploratory testing",
+        "Risk-based testing",
+        "Test case management",
+        "UAT facilitation",
+        "AI-assisted test design"
+      ]
+    },
+    {
+      "name": "Multi-platform system testing",
+      "icon": "fa-mobile-screen",
+      "category": ["Execution", "Systems"],
+      "tools": [
+        "Web",
+        "Mobile",
+        "Desktop apps",
+        "Oracle Flexcube",
+        "Salesforce CRM",
+        "SAP IS-U",
+        "eCommerce"
+      ]
+    },
+    {
+      "name": "Integration & data validation",
+      "icon": "fa-database",
+      "category": ["Backend"],
+      "tools": [
+        "API",
+        "Web services",
+        "MS SQL",
+        "Oracle database",
+        "Dapper",
+        "Charles Proxy"
+      ]
+    },
+    {
+      "name": "Defect lifecycle & triage leadership",
+      "icon": "fa-bug",
+      "category": ["Investigation", "Bug management"],
+      "tools": [
+        "Root cause analysis",
+        "Cross-team triage",
+        "Azure DevOps",
+        "Jira",
+        "Regression management"
+      ]
+    },
+    {
+      "name": "Agile leadership & delivery",
+      "icon": "fa-people-group",
+      "category": ["Management"],
+      "tools": [
+        "Scrum Master (SAFe 4.6)",
+        "Large test teams",
+        "Stakeholder reporting",
+        "Hypercare / BAU"
+      ]
+    }
+  ],
+
+  "experiences": [
     {
       "role": "Test Consultant | Engineer Level 1",
       "company": "Planit Testing",

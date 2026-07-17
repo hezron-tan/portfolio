@@ -871,6 +871,12 @@ section {
   overflow: visible;
 }
 
+.project-modal:modal {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+}
+
 .project-modal::backdrop {
   background: rgba(0, 0, 0, 0.65);
 }

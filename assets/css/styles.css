@@ -842,12 +842,14 @@ section {
 }
 
 .project-modal {
+  position: relative;
   width: min(42rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
   padding: 0;
-  border: solid 2px var(--border);
-  border-radius: 1rem;
-  background: var(--surface-2);
+  border: none;
+  background: transparent;
   color: var(--text);
+  overflow: visible;
 }
 
 .project-modal::backdrop {
@@ -856,11 +858,14 @@ section {
 
 .project-modal article {
   padding: 1.8rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  border: solid 2px var(--border);
+  border-radius: 1rem;
+  background: var(--surface-2);
 }
 
 .project-modal-header {
-  position: relative;
-  padding-right: 2.5rem;
   margin-bottom: 1.25rem;
 }
 
@@ -880,15 +885,28 @@ section {
 
 .project-modal-close {
   position: absolute;
-  top: 0;
-  right: 0;
-  border: 0;
-  background: none;
+  top: -0.85rem;
+  right: -0.85rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: solid 2px var(--border);
+  border-radius: 50%;
+  background: var(--surface-2);
   color: var(--muted);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   line-height: 1;
   padding: 0;
   cursor: pointer;
+}
+
+.project-modal-close:hover,
+.project-modal-close:focus-visible {
+  color: var(--text-strong);
+  outline: none;
 }
 
 .project-modal-body.detail-body {

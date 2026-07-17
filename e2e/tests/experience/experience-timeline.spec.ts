@@ -185,5 +185,18 @@ test.describe('Experience navigation', () => {
       expect(alignment.firstDotXOffset).toBeLessThan(2);
       expect(alignment.lastDotXOffset).toBeLessThan(2);
     });
+
+    test('experience modal and close button stay within the mobile viewport', async ({ portfolioPage }) => {
+      await portfolioPage.viewFullHistoryBtn.click();
+      await expect(portfolioPage.experienceModal).toBeVisible();
+
+      const bounds = await portfolioPage.isModalFullyWithinViewport('experience-modal');
+      expect(bounds.withinViewport).toBe(true);
+      expect(bounds.dialog.bottom).toBeLessThanOrEqual(bounds.viewport.height + 1);
+      expect(bounds.dialog.right).toBeLessThanOrEqual(bounds.viewport.width + 1);
+      expect(bounds.close).not.toBeNull();
+      expect(bounds.close!.right).toBeLessThanOrEqual(bounds.viewport.width + 1);
+      expect(bounds.close!.top).toBeGreaterThanOrEqual(-1);
+    });
   });
 });

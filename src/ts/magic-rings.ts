@@ -108,8 +108,8 @@ export function createMagicRings(
   options: MagicRingsOptions = {}
 ): () => void {
   const {
-    color = "#5fb0b7",
-    colorTwo = "#9fd9de",
+    color = "#33a1ea",
+    colorTwo = "#8ec9f5",
     speed = 1,
     ringCount = 6,
     attenuation = 10,

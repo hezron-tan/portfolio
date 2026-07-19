@@ -31,8 +31,8 @@ export async function initSiteLoader() {
         try {
             cleanups.push(createMagicRings(ringsMount, {
                 // Theme teal accents (not React Bits pink/cyan defaults)
-                color: "#5fb0b7",
-                colorTwo: "#a8dce0",
+                color: "#33a1ea",
+                colorTwo: "#a9d6f7",
                 speed: 0.85,
                 ringCount: 6,
                 attenuation: 11,

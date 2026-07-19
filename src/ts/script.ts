@@ -541,22 +541,53 @@ function handleHashChange(): void {
   });
 }
 
-function highlightNav(): void {
-  const sections = Array.from(document.querySelectorAll<HTMLElement>("main section"));
-  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>(".navbar-nav .nav-link"));
+/**
+ * Toggles the fixed navigation bar's scrolled state, which fades in a blurred
+ * background once the page is scrolled past the top.
+ */
+function updateNavScrollState(): void {
+  const scrolled = window.scrollY > 12;
+  document.getElementById("nav")?.classList.toggle("is-scrolled", scrolled);
+  document.getElementById("titleBar")?.classList.toggle("is-scrolled", scrolled);
+}
 
-  const currentSection = sections.find(section => {
-    const rect = section.getBoundingClientRect();
-    return rect.top <= window.innerHeight * 0.3 && rect.bottom > window.innerHeight * 0.3;
+/**
+ * Scroll-spy for both the desktop top navigation and the mobile slide-in panel.
+ * Highlights the item ("current") whose target section is currently in view,
+ * based on the scroll position.
+ */
+function highlightNav(): void {
+  const desktopLinks = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>("#nav .menu li a")
+  );
+  const mobileLinks = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>("#navPanel .link")
+  );
+
+  const source = desktopLinks.length ? desktopLinks : mobileLinks;
+  const sectionIds = source
+    .map(link => link.getAttribute("href") ?? "")
+    .filter(href => href.startsWith("#"));
+  if (sectionIds.length === 0) return;
+
+  const marker = window.innerHeight * 0.3;
+  let activeId = sectionIds[0];
+  sectionIds.forEach(id => {
+    const section = document.querySelector<HTMLElement>(id);
+    if (section && section.getBoundingClientRect().top <= marker) {
+      activeId = id;
+    }
   });
 
-  links.forEach(link => {
-    const target = document.querySelector(link.hash) as HTMLElement | null;
-    if (target === currentSection) {
-      link.classList.add("active");
-    } else {
-      link.classList.remove("active");
-    }
+  const atBottom =
+    window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+  if (atBottom) activeId = sectionIds[sectionIds.length - 1];
+
+  desktopLinks.forEach(link => {
+    link.parentElement?.classList.toggle("current", link.getAttribute("href") === activeId);
+  });
+  mobileLinks.forEach(link => {
+    link.classList.toggle("current", link.getAttribute("href") === activeId);
   });
 }
 
@@ -644,7 +675,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   attachInPageAnchorHandlers();
   initBannerLightfall();
   highlightNav();
+  updateNavScrollState();
   window.addEventListener("scroll", highlightNav, { passive: true });
+  window.addEventListener("scroll", updateNavScrollState, { passive: true });
   window.addEventListener("hashchange", handleHashChange);
   window.addEventListener("popstate", handleHashChange);
   window.addEventListener("pageshow", (event: PageTransitionEvent) => {

@@ -40,7 +40,7 @@ const hexToRGB = (hex: string): RGB => {
 };
 
 const prepColors = (input: string[] | undefined) => {
-  const base = (input && input.length ? input : ["#9fd9de", "#5fb0b7", "#3a8a92"]).slice(0, MAX_COLORS);
+  const base = (input && input.length ? input : ["#8ec9f5", "#33a1ea", "#1b6fc2"]).slice(0, MAX_COLORS);
   const count = base.length;
   const arr: RGB[] = [];
   for (let i = 0; i < MAX_COLORS; i++) {
@@ -204,8 +204,8 @@ export function createLightfall(
   options: LightfallOptions = {}
 ): () => void {
   const {
-    colors = ["#9fd9de", "#5fb0b7", "#3a8a92"],
-    backgroundColor = "#1a3035",
+    colors = ["#8ec9f5", "#33a1ea", "#1b6fc2"],
+    backgroundColor = "#10202f",
     speed = 0.45,
     streakCount = 3,
     streakWidth = 1,
@@ -423,8 +423,8 @@ export function initBannerLightfall(): () => void {
     return createLightfall(mount, {
       // Soft teal ambient + accent streaks (theme tokens, not React Bits purple/pink)
       // Tuned for readability and lower GPU cost while the banner is on-screen
-      colors: ["#a8dce0", "#5fb0b7", "#3a8a92"],
-      backgroundColor: "#3a8a92",
+      colors: ["#a9d6f7", "#33a1ea", "#1b6fc2"],
+      backgroundColor: "#1b6fc2",
       speed: 0.45,
       streakCount: 2,
       streakWidth: 1,

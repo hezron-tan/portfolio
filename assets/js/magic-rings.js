@@ -74,7 +74,7 @@ void main() {
 }
 `;
 export function createMagicRings(container, options = {}) {
-    const { color = "#5fb0b7", colorTwo = "#9fd9de", speed = 1, ringCount = 6, attenuation = 10, lineThickness = 2, baseRadius = 0.35, radiusStep = 0.1, scaleRate = 0.1, opacity = 1, noiseAmount = 0.08, rotation = 0, ringGap = 1.5, fadeIn = 0.7, fadeOut = 0.5, followMouse = true, mouseInfluence = 0.15, hoverScale = 1.15, parallax = 0.04, clickBurst = false, dpr = Math.min(window.devicePixelRatio || 1, 2), } = options;
+    const { color = "#33a1ea", colorTwo = "#8ec9f5", speed = 1, ringCount = 6, attenuation = 10, lineThickness = 2, baseRadius = 0.35, radiusStep = 0.1, scaleRate = 0.1, opacity = 1, noiseAmount = 0.08, rotation = 0, ringGap = 1.5, fadeIn = 0.7, fadeOut = 0.5, followMouse = true, mouseInfluence = 0.15, hoverScale = 1.15, parallax = 0.04, clickBurst = false, dpr = Math.min(window.devicePixelRatio || 1, 2), } = options;
     const renderer = new Renderer({
         dpr,
         alpha: true,

@@ -12,7 +12,7 @@ const hexToRGB = (hex) => {
     return [r, g, b];
 };
 const prepColors = (input) => {
-    const base = (input && input.length ? input : ["#9fd9de", "#5fb0b7", "#3a8a92"]).slice(0, MAX_COLORS);
+    const base = (input && input.length ? input : ["#8ec9f5", "#33a1ea", "#1b6fc2"]).slice(0, MAX_COLORS);
     const count = base.length;
     const arr = [];
     for (let i = 0; i < MAX_COLORS; i++) {
@@ -169,7 +169,7 @@ void main() {
  * @returns Cleanup function that stops the animation and removes the canvas.
  */
 export function createLightfall(container, options = {}) {
-    const { colors = ["#9fd9de", "#5fb0b7", "#3a8a92"], backgroundColor = "#1a3035", speed = 0.45, streakCount = 3, streakWidth = 1, streakLength = 1.1, glow = 0.9, density = 0.55, twinkle = 0.8, zoom = 2.8, backgroundGlow = 0.4, opacity = 1, mouseInteraction = true, mouseStrength = 0.4, mouseRadius = 1, mouseDampening = 0.15, mixBlendMode, dpr, pointerTarget = container, } = options;
+    const { colors = ["#8ec9f5", "#33a1ea", "#1b6fc2"], backgroundColor = "#10202f", speed = 0.45, streakCount = 3, streakWidth = 1, streakLength = 1.1, glow = 0.9, density = 0.55, twinkle = 0.8, zoom = 2.8, backgroundGlow = 0.4, opacity = 1, mouseInteraction = true, mouseStrength = 0.4, mouseRadius = 1, mouseDampening = 0.15, mixBlendMode, dpr, pointerTarget = container, } = options;
     const renderer = new Renderer({
         // Cap DPR — full retina + this shader is a common scroll hitch source
         dpr: dpr ?? Math.min(window.devicePixelRatio || 1, 1.25),
@@ -351,8 +351,8 @@ export function initBannerLightfall() {
         return createLightfall(mount, {
             // Soft teal ambient + accent streaks (theme tokens, not React Bits purple/pink)
             // Tuned for readability and lower GPU cost while the banner is on-screen
-            colors: ["#a8dce0", "#5fb0b7", "#3a8a92"],
-            backgroundColor: "#3a8a92",
+            colors: ["#a9d6f7", "#33a1ea", "#1b6fc2"],
+            backgroundColor: "#1b6fc2",
             speed: 0.45,
             streakCount: 2,
             streakWidth: 1,

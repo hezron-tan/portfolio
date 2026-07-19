@@ -451,21 +451,36 @@ function handleHashChange() {
         }
     });
 }
+function updateNavScrollState() {
+    const scrolled = window.scrollY > 12;
+    document.getElementById("nav")?.classList.toggle("is-scrolled", scrolled);
+    document.getElementById("titleBar")?.classList.toggle("is-scrolled", scrolled);
+}
 function highlightNav() {
-    const sections = Array.from(document.querySelectorAll("main section"));
-    const links = Array.from(document.querySelectorAll(".navbar-nav .nav-link"));
-    const currentSection = sections.find(section => {
-        const rect = section.getBoundingClientRect();
-        return rect.top <= window.innerHeight * 0.3 && rect.bottom > window.innerHeight * 0.3;
+    const desktopLinks = Array.from(document.querySelectorAll("#nav .menu li a"));
+    const mobileLinks = Array.from(document.querySelectorAll("#navPanel .link"));
+    const source = desktopLinks.length ? desktopLinks : mobileLinks;
+    const sectionIds = source
+        .map(link => link.getAttribute("href") ?? "")
+        .filter(href => href.startsWith("#"));
+    if (sectionIds.length === 0)
+        return;
+    const marker = window.innerHeight * 0.3;
+    let activeId = sectionIds[0];
+    sectionIds.forEach(id => {
+        const section = document.querySelector(id);
+        if (section && section.getBoundingClientRect().top <= marker) {
+            activeId = id;
+        }
     });
-    links.forEach(link => {
-        const target = document.querySelector(link.hash);
-        if (target === currentSection) {
-            link.classList.add("active");
-        }
-        else {
-            link.classList.remove("active");
-        }
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    if (atBottom)
+        activeId = sectionIds[sectionIds.length - 1];
+    desktopLinks.forEach(link => {
+        link.parentElement?.classList.toggle("current", link.getAttribute("href") === activeId);
+    });
+    mobileLinks.forEach(link => {
+        link.classList.toggle("current", link.getAttribute("href") === activeId);
     });
 }
 function attachFormHandler() {
@@ -545,7 +560,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     attachInPageAnchorHandlers();
     initBannerLightfall();
     highlightNav();
+    updateNavScrollState();
     window.addEventListener("scroll", highlightNav, { passive: true });
+    window.addEventListener("scroll", updateNavScrollState, { passive: true });
     window.addEventListener("hashchange", handleHashChange);
     window.addEventListener("popstate", handleHashChange);
     window.addEventListener("pageshow", (event) => {
